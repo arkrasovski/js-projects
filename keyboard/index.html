@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet">
+    <link href="font.css" rel="stylesheet">
+    <title>Virtual piano</title>
+</head>
+<body>
+    <div class="wrapper">
+    <header><h1>Virtual Piano</h1></header>
+
+    <div class="content">
+        <div class="buttons">
+            <button class = "top-btns btn-active" id="notes" >Notes</button>
+            <button class = "top-btns" id="letters">Letters</button>
+            <span id = "full" class="icon-enlarge"></span>
+        </div>
+  
+
+    <div class="piano">
+        <div class="w_item key" data-note="C"  data-key="65">
+            <span class="symbol">c</span>
+        <span class="symbol hide">a</span>
+    </div>
+        <div class="b_item key" data-note="Cs" data-key="83">
+            <span class="symbol">c#</span>
+        <span class="symbol hide">s</span>
+    </div>
+        <div class="w_item key" data-note="D" data-key="68">
+            <span class="symbol">d</span>
+        <span class="symbol hide">d</span>
+    </div>
+        <div class="b_item key" data-note="Ds" data-key="70">
+            <span class="symbol">d#</span>
+        <span class="symbol hide">f</span>
+    </div>
+        <div class="w_item key" data-note="E" data-key="71">
+            <span class="symbol">e</span>
+        <span class="symbol hide">g</span>
+    </div>
+        <div class="w_item key" data-note="F" data-key="72">
+            <span class="symbol">f</span>
+        <span class="symbol hide">h</span>
+    </div>
+        <div class="b_item key" data-note="Fs" data-key="74">
+            <span class="symbol">f#</span>
+        <span class="symbol hide">j</span>
+    </div>
+        <div class="w_item key" data-note="G" data-key="75">
+            <span class="symbol">g</span>
+        <span class="symbol hide">k</span>
+    </div>
+        <div class="b_item key" data-note="Gs" data-key="76">
+            <span class="symbol">g#</span>
+        <span class="symbol hide">l</span>
+    </div>
+        <div class="w_item key" data-note="A" data-key="86">
+            <span class="symbol">a</span>
+        <span class="symbol hide">v</span>
+    </div>
+        <div class="b_item key" data-note="As" data-key="66">
+            <span class="symbol">a#</span>
+        <span class="symbol hide">b</span>
+    </div>
+        <div class="w_item key" data-note="B" data-key="77">
+            <span class="symbol">b</span>
+        <span class="symbol hide">n</span>
+    </div>
+    </div>
+
+
+ </div>
+ <div class="footer"><div class="github"><img src="github.png">Github</div> <div><button data-note="titan" class="btn-active" id="titan">Дададидас</button> <button data-note="titan" id="stop">Pause</button></div></div>
+ 
+</div>
+    <audio data-note="C"  data-key="65" src="sounds/c.mp3"></audio>
+    <audio data-note="Cs" data-key="83" src="sounds/cs.mp3"></audio>
+    <audio data-note="D" data-key="68" src="sounds/d.mp3"></audio>
+    <audio data-note="Ds" data-key="70" src="sounds/ds.mp3"></audio>
+    <audio data-note="E" data-key="71" src="sounds/e.mp3"></audio>
+    <audio data-note="F" data-key="72" src="sounds/f.mp3"></audio>
+    <audio data-note="Fs" data-key="74" src="sounds/fs.mp3"></audio>
+    <audio data-note="G" data-key="75" src="sounds/g.mp3"></audio>
+    <audio data-note="Gs" data-key="76" src="sounds/gs.mp3"></audio>
+    <audio data-note="A" data-key="86" src="sounds/a.mp3"></audio>
+    <audio data-note="As" data-key="66" src="sounds/as.mp3"></audio>
+    <audio data-note="B" data-key="77" src="sounds/b.mp3"></audio>
+    <audio  data-note="titan" src="sounds/titan.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>

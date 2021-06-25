@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="style.css" rel="stylesheet">
+    <link href="font.css" rel="stylesheet">
+    <title>Photo-filter</title>
+</head>
+<body>
+    <div class="wrapper">
+    <header><h1>Photo-filter</h1></header>
+
+    <div class="content">
+        <div class="full">
+            <span id = "full" class="icon-enlarge"></span>
+        </div>
+  
+        <div class="btns">
+            <button class="btn-reset">Reset</button>
+            <button>Next picture</button>
+
+                <input id="upload" class="upload" value="Load picture" type="file"><label class="load" for="upload"><span>Load picture</span></label>
+
+            
+            <button>
+                <a href="link_to_image" download="image.png">Save picture</a>
+            </button>
+        </div>
+        <div class="main_box">
+         
+            <div class="properties">
+                
+                <div class="inputbox"><label for="blur">Blur</label>
+                    <div class="input">
+    
+                        <input type="range"  id="blur" name="blur" min="0" max="100" value="0" data-sizing="px">
+                        <output   for="blur">0</output></div>
+                    </div>
+           
+               
+                    <div class="inputbox"> <label for="invert">Invert</label>
+                    <div class="input"> <input type="range"  id="invert" name="invert" min="0" max="100" value="0" data-sizing="%">
+                        <output  for="invert">0</output></div>
+                    </div>
+              
+               
+                        <div class="inputbox"> <label for="sepia">Sepia</label>
+                    <div class="input"> <input type="range"  id="sepia" name="sepia" min="0" max="100" value="0" data-sizing="%">
+                        <output  for="sepia">0</output></div>
+                    </div>
+            
+               
+                        <div class="inputbox"><label for="saturate">Saturate</label>
+                    <div class="input"> <input type="range"  id="saturate" name="saturate" min="0" max="200" value="100" data-sizing="%">
+                        <output  for="saturate">100</output></div>
+                    </div>
+             
+               
+                        <div class="inputbox"> <label for="hue">Hue rotate</label>
+                    <div class="input"> <input type="range"  id="hue" name="hue-rotate" min="0" max="360" value="0" data-sizing="deg">
+                        <output  for="hue">0</output></div>
+                    </div>
+                 
+          
+                <!-- <label>
+                    Blur:
+                    <input name="blur" data-sizing="px" type="range" min="0" max="100" value="0" />
+                    <output name="result">0</output>
+                  </label> -->
+
+            </div>
+          
+                <div class="image">
+                    <!-- <img src="city.jpg"> -->
+                    <canvas></canvas>
+                </div>
+
+
+        </div>
+        
+
+
+ </div>
+ <div class="footer"><div class="github"><img src="github.png">Github</div> <div><button data-note="titan" class="btn-active" id="titan">Дададидас</button> <button data-note="titan" id="stop">Pause</button></div></div>
+ 
+</div>
+
+
+    <script src="script.js"></script>
+</body>
+</html>

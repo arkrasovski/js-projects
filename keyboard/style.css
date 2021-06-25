@@ -1,0 +1,152 @@
+* {
+  margin: 0;
+  padding: 0;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  -khtml-user-select: none;
+}
+
+html,
+body {
+  height: 100%;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+.content {
+  flex: 1 0 auto;
+  background-color: #2e363d;
+}
+.footer {
+  flex: 0 0 auto;
+  background-color: #2e363d;
+  border-top: 1px solid #fff;
+  padding: 10px 10% 5px 10%;
+  display: flex;
+
+  color: #fff;
+  font-size: 25px;
+  justify-content: space-between;
+}
+.footer img {
+  width: 100px;
+}
+header {
+  width: 100%;
+  color: #fff;
+  text-align: center;
+  background-color: #545c63;
+  padding: 10px 0;
+  border-bottom: 1px solid #fff;
+}
+
+.keys {
+  display: flex;
+  justify-content: space-between;
+  width: 80%;
+  margin: 300px auto;
+}
+
+.key {
+  width: 10%;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-content: center;
+  padding: 25px 0;
+  box-sizing: border-box;
+}
+
+kbd {
+  font-size: 50px;
+}
+.buttons {
+  background-color: #2e363d;
+  text-align: center;
+  margin-top: 50px;
+  padding: 0 10%;
+  position: relative;
+}
+.buttons span {
+  font-size: 50px;
+  color: #fff;
+  position: absolute;
+  right: 10%;
+}
+button {
+  padding: 15px;
+  width: 150px;
+  font-size: 20px;
+  border: 0;
+  color: #fff;
+  border-radius: 5px;
+  border: 1px solid #59c7b8;
+  color: #59c7b8;
+  background-color: #fff;
+  outline: none;
+}
+.piano {
+  margin: 200px auto;
+  width: 800px;
+  height: 500px;
+  display: flex;
+  justify-content: space-between;
+}
+.w_item {
+  height: 100%;
+  background-color: #fff;
+  width: 100px;
+  border-radius: 0 0 15px 15px;
+  position: relative;
+  text-align: center;
+  font-size: 50px;
+  transition: all 0.07s;
+}
+.w_item span {
+  position: absolute;
+  bottom: 10px;
+  left: 40px;
+}
+.hide {
+  display: none;
+}
+.b_item {
+  height: 60%;
+  width: 80px;
+  background-color: #2e363d;
+  color: #fff;
+  border-radius: 0 0 15px 15px;
+  margin-left: -45px;
+  margin-right: -45px;
+  z-index: 2;
+  text-align: center;
+  font-size: 50px;
+  transition: all 0.07s;
+}
+
+.playing {
+  transform: scale(1.001);
+  border-color: gray;
+  background-color: #545c63;
+}
+.key {
+  transition: all 0.07s ease;
+}
+.btn-active {
+  color: #fff;
+  background-color: #59c7b8;
+}
+#titan {
+  margin-right: 5px;
+}
+.github {
+  display: flex;
+  align-items: center;
+}
