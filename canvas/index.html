@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+  </head>
+  <body>
+    <div class="container">
+      <canvas id="draw" width="800" height="800"></canvas>
+      <div class="inputs">
+        <label class="audio-inner" title="Volume">
+          the size
+          <input
+            class="size"
+            name="size"
+            data-sizing="%"
+            type="range"
+            min="0"
+            max="100"
+            value="100"
+          />
+        </label>
+        <div class="colors">
+          <div class="color color1" data-color="302"></div>
+          <div class="color color2" data-color="250"></div>
+        </div>
+      </div>
+    </div>
+    <script>
+      const sizeInput = document.querySelector("input");
+      const canvas = document.querySelector("#draw");
+      const ctx = canvas.getContext("2d");
+
+      let isDrawing = false;
+      let lastX = 0;
+      let lastY = 0;
+      let hue = 0;
+      let direction = true;
+      sizeInput.addEventListener("input", (e) => {
+        ctx.lineWidth = sizeInput.value;
+      });
+
+      const colors = document.querySelectorAll(".color");
+      console.log(colors);
+
+      colors.forEach((color) => {
+        color.style.cssText = `background-color: hsl(${color.getAttribute(
+          "data-color"
+        )}, 100%, 50%)`;
+        color.addEventListener("click", (e) => {
+          hue = e.target.dataset.color;
+        });
+      });
+
+      function init() {
+        canvas.width = window.innerWidth - 0.1 * window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        ctx.strokeStyle = "#BADA55";
+        ctx.lineJoin = "round";
+        ctx.lineCap = "round";
+        ctx.lineWidth = 100;
+        // ctx.globalCompositeOperation = 'multiply';
+      }
+
+      init();
+      window.addEventListener("resize", init);
+
+      function draw(e) {
+        if (!isDrawing) return; // stop the fn from running when they are not moused down
+
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+        ctx.beginPath();
+        // start from
+        ctx.moveTo(lastX, lastY);
+        // go to
+        ctx.lineTo(e.offsetX, e.offsetY);
+        ctx.stroke();
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+
+        // if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+        //   direction = !direction;
+        // }
+
+        // if (direction) {
+        //   ctx.lineWidth++;
+        // } else {
+        //   ctx.lineWidth--;
+        // }
+      }
+
+      function test(e) {}
+
+      canvas.addEventListener("mousedown", (e) => {
+        isDrawing = true;
+        [lastX, lastY] = [e.offsetX, e.offsetY];
+        draw(e);
+      });
+
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mouseup", () => (isDrawing = false));
+      canvas.addEventListener("mouseout", () => (isDrawing = false));
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+      .container {
+        display: flex;
+        width: 100%;
+      }
+      canvas {
+        width: 90%;
+      }
+
+      .inputs {
+        width: 10%;
+      }
+      .inputs > label {
+        width: 100%;
+        display: inline-block;
+        font-size: 50px;
+      }
+      input {
+        width: 90%;
+        -webkit-appearance: none;
+        height: 30px;
+        border-radius: 50px;
+        background: #deb887;
+        outline: none;
+        opacity: 0.7;
+      }
+      input::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #8b4513;
+        cursor: pointer;
+      }
+      label {
+        width: 100%;
+      }
+      .color {
+        width: 100px;
+        height: 100px;
+      }
+    </style>
+  </body>
+</html>
