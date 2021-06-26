@@ -1,7 +1,7 @@
 const inputs = document.querySelectorAll(".properties input");
 const outputs = document.querySelectorAll(".properties output");
 const canvas = document.querySelector("canvas");
-
+const ctx = canvas.getContext("2d");
 let conditionArray = [];
 // const images = {};
 // let imagesCounter = 1;
@@ -18,7 +18,7 @@ function changePhoto(ctx, img) {
       ctx.filter = conditionArray.join(" ");
       ctx.drawImage(img, 0, 0);
       revertChanges(inputs, outputs, i, ctx, img);
-      console.log(ctx);
+
     });
   }
 }
@@ -80,7 +80,7 @@ function drawImage(src = base + "01.jpg") {
   img.onload = function () {
     canvas.width = img.width;
     canvas.height = img.height;
-    const ctx = canvas.getContext("2d");
+ 
     ctx.drawImage(img, 0, 0);
     changePhoto(ctx, img);
     // nextPicture(img);
@@ -93,12 +93,14 @@ drawImage();
 function revertChanges(inputs, outputs, i, ctx, img) {
   let buttonReset = document.querySelector(".btn-reset");
   buttonReset.addEventListener("click", () => {
-    console.log(inputs[i]);
+ 
     if (inputs[i].getAttribute("name") != "saturate") {
       inputs[i].value = 0;
-    } else inputs[i].value = 100;
+    } else {inputs[i].value = 100};
     outputs[i].innerHTML = inputs[i].value;
-    ctx.filter = "none";
+    ctx.clearRect(0,0,canvas.width, canvas.height);       
+    ctx.filter="none";
+    conditionArray.length = 0
     ctx.drawImage(img, 0, 0);
   });
 }
@@ -134,30 +136,29 @@ function revertChanges(inputs, outputs, i, ctx, img) {
 
 //кнопки;
 const btns = document.querySelectorAll(".btns button");
-console.log(btns);
 btns.forEach((item) => {
   item.addEventListener("click", (e) => {
-    if (e.toElement.outerText === "Reset") {
-      ctx.filter = "none";
-      inputs.forEach((input) => {
-        if (input.id != "saturate") {
-          input.value = 0;
-          document.documentElement.style.setProperty(`--${input.id}`, 0);
-        }
-        if (input.id == "saturate") {
-          input.value = "100%";
-          document.documentElement.style.setProperty(`--${input.id}`, "100%");
-        }
-      });
-      outputs.forEach((item) => {
-        if (item.getAttribute("for") !== "saturate") {
-          item.value = 0;
-        }
-        if (item.getAttribute("for") === "saturate") {
-          item.value = 100;
-        }
-      });
-    }
+    // if (e.toElement.outerText === "Reset") {
+    //   ctx.filter = "none";
+    //   inputs.forEach((input) => {
+    //     if (input.id != "saturate") {
+    //       input.value = 0;
+    //       document.documentElement.style.setProperty(`--${input.id}`, 0);
+    //     }
+    //     if (input.id == "saturate") {
+    //       input.value = "100%";
+    //       document.documentElement.style.setProperty(`--${input.id}`, "100%");
+    //     }
+    //   });
+    //   outputs.forEach((item) => {
+    //     if (item.getAttribute("for") !== "saturate") {
+    //       item.value = 0;
+    //     }
+    //     if (item.getAttribute("for") === "saturate") {
+    //       item.value = 100;
+    //     }
+    //   });
+    // }
 
     //
     if (e.toElement.outerText === "Next picture") {
