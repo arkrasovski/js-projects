@@ -2,27 +2,39 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>HTML5 Canvas</title>
   </head>
   <body>
     <div class="container">
       <canvas id="draw" width="800" height="800"></canvas>
       <div class="inputs">
+        <header>CanvasApp</header>
         <label class="audio-inner" title="Volume">
-          the size
-          <input
-            class="size"
-            name="size"
-            data-sizing="%"
-            type="range"
-            min="0"
-            max="100"
-            value="100"
-          />
+          Change the size
+          <div class="ranger">
+            <input
+              class="size"
+              name="size"
+              data-sizing="%"
+              type="range"
+              min="1"
+              max="100"
+              value="100"
+            />
+            <div class="counter"></div>
+          </div>
         </label>
+        <p>Choose the color</p>
         <div class="colors">
-          <div class="color color1" data-color="302"></div>
-          <div class="color color2" data-color="250"></div>
+          <div class="color" data-color="0"></div>
+          <div class="color" data-color="36"></div>
+          <div class="color" data-color="60"></div>
+          <div class="color" data-color="90"></div>
+          <div class="color" data-color="180"></div>
+          <div class="color" data-color="250"></div>
+          <div class="color" data-color="300"></div>
+          <div class="color" data-color="282"></div>
         </div>
       </div>
     </div>
@@ -30,18 +42,22 @@
       const sizeInput = document.querySelector("input");
       const canvas = document.querySelector("#draw");
       const ctx = canvas.getContext("2d");
+      const counter = document.querySelector(".counter");
 
       let isDrawing = false;
       let lastX = 0;
       let lastY = 0;
       let hue = 0;
       let direction = true;
+      counter.innerHTML = sizeInput.value;
       sizeInput.addEventListener("input", (e) => {
         ctx.lineWidth = sizeInput.value;
+        counter.innerHTML = sizeInput.value;
       });
 
       const colors = document.querySelectorAll(".color");
-      console.log(colors);
+
+      console.log(counter);
 
       colors.forEach((color) => {
         color.style.cssText = `background-color: hsl(${color.getAttribute(
@@ -53,7 +69,7 @@
       });
 
       function init() {
-        canvas.width = window.innerWidth - 0.1 * window.innerWidth;
+        canvas.width = window.innerWidth - 0.15 * window.innerWidth;
         canvas.height = window.innerHeight;
 
         ctx.strokeStyle = "#BADA55";
@@ -112,40 +128,168 @@
         width: 100%;
       }
       canvas {
-        width: 90%;
+        width: 85%;
       }
 
+      header {
+        font-size: 40px;
+        text-align: center;
+        margin-bottom: 20px;
+      }
       .inputs {
-        width: 10%;
+        width: 15%;
+        padding: 1%;
+        background-color: #2e363d;
+        color: #fff;
       }
       .inputs > label {
         width: 100%;
         display: inline-block;
-        font-size: 50px;
+        font-size: 25px;
+
+        margin-bottom: 15px;
       }
-      input {
-        width: 90%;
-        -webkit-appearance: none;
-        height: 30px;
-        border-radius: 50px;
-        background: #deb887;
+      input[type="range"] {
+        appearance: none;
+        height: 4px;
+        background-color: #a2abb3;
         outline: none;
-        opacity: 0.7;
+        border-radius: 0.25rem;
+        transition: 0.3s;
+        cursor: pointer;
+        width: 70%;
       }
-      input::-webkit-slider-thumb {
-        -webkit-appearance: none;
+      input[type="range"]::-webkit-slider-thumb {
+        appearance: none;
+        width: 30px;
+        height: 30px;
+        background-color: #313940;
+        border: 4px solid #a2abb3;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .ranger {
+        margin-top: 15px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .counter {
+        width: 20%;
+        height: 40px;
+        border: 1px solid #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .colors {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-gap: 1em;
+        justify-items: center;
+      }
+      p {
+        font-size: 25px;
+        margin: 0 0 15px 0;
+      }
+
+      .color {
         width: 50px;
         height: 50px;
-        border-radius: 50%;
-        background: #8b4513;
-        cursor: pointer;
       }
-      label {
-        width: 100%;
+
+      @media screen and (max-width: 1800px) and (min-width: 320px) {
+        .colors {
+          grid-template-columns: repeat(2, 1fr);
+        }
       }
-      .color {
-        width: 100px;
-        height: 100px;
+      @media screen and (max-width: 1500px) and (min-width: 1000px) {
+        header {
+          font-size: 25px;
+        }
+
+        .inputs > label {
+          font-size: 15px;
+        }
+        p {
+          font-size: 15px;
+        }
+        input[type="range"] {
+          height: 3px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+          width: 20px;
+          height: 20px;
+        }
+        .counter {
+          height: 30px;
+        }
+        .color {
+          width: 35px;
+          height: 35px;
+        }
+      }
+      @media screen and (max-width: 1000px) and (min-width: 500px) {
+        header {
+          font-size: 15px;
+        }
+
+        .inputs > label {
+          font-size: 10px;
+        }
+        p {
+          font-size: 10px;
+        }
+        input[type="range"] {
+          height: 3px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+          width: 15px;
+          height: 15px;
+          border: 3px solid #a2abb3;
+        }
+        .counter {
+          height: 20px;
+        }
+        .color {
+          width: 25px;
+          height: 25px;
+        }
+      }
+      @media screen and (max-width: 500px) and (min-width: 320px) {
+        header {
+          font-size: 10px;
+          margin-bottom: 7px;
+        }
+
+        .inputs > label {
+          font-size: 7px;
+          margin-bottom: 7px;
+        }
+        p {
+          font-size: 7px;
+          margin-bottom: 7px;
+        }
+        input[type="range"] {
+          height: 2px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+          width: 10px;
+          height: 10px;
+          border: 2px solid #a2abb3;
+        }
+        .ranger {
+          margin-top: 7px;
+        }
+        .counter {
+          height: 10px;
+        }
+        .color {
+          width: 15px;
+          height: 15px;
+        }
       }
     </style>
   </body>
