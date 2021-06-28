@@ -90,7 +90,7 @@ body {
 
 .calc {
   width: 90%;
-  margin: 0 auto;
+  margin: 0 auto 30px auto;
   height: 550px;
   background-color: #e8e0c3;
   padding: 1%;
@@ -146,7 +146,6 @@ body {
   top: 0;
   left: 0;
   display: none;
-
   align-items: center;
   justify-content: center;
 }
@@ -183,7 +182,6 @@ body {
 
 .tutor {
   margin-left: 5%;
-  margin-top: 30px;
   width: 120px;
   height: 40px;
   color: #000;

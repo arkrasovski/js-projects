@@ -20,12 +20,11 @@ let chance;
 let boolTutor = false;
 function play(tutor, score = 0) {
   result = 0;
-
   if (tutor === 1) {
     chance = 1;
   }
   if (tutor === 2) {
-    chance = 4;
+    chance = 9999;
   }
   if (tutor === 3) {
     chance = 0;
@@ -44,8 +43,7 @@ function tutorial() {
     if (parseInt(water.style.height, 10) == water.offsetHeight) {
       water.style.height = water.offsetHeight / 8 + "px";
     }
-    console.log(water.style.height);
-    console.log(water.offsetHeight);
+
     modal.style.display = "none";
     play(2);
     createBall("", "ball1", true);
@@ -92,7 +90,6 @@ function submit() {
       ball.style.top = window.innerHeight + "px";
       score += 30;
       scorepanel.innerHTML = "Score " + score;
-
       result = 0;
       tablo.innerHTML = 0;
     }
@@ -151,7 +148,7 @@ function move(el, tutor) {
         el.remove();
         score -= 50;
         chance++;
-
+        console.log(chance);
         scorepanel.innerHTML = "Score " + score;
         audio.play();
         clearInterval(id);
@@ -241,7 +238,7 @@ function createBall(cr, clas, tutor) {
   div.style.left = getRandomArbitrary(0, pole.offsetWidth - 70) + "px";
   pole.prepend(div);
   move(div, tutor);
-  if (chance == 3) {
+  if (chance >= 3 && chance != 9999) {
     clearInterval(cr);
     const balls = document.querySelectorAll(".ball");
     balls.forEach((ball) => {
@@ -250,7 +247,7 @@ function createBall(cr, clas, tutor) {
     openModal();
     boolTutor = false;
   }
-  if (chance == 4) {
+  if (chance == 9999) {
     clearInterval(cr);
     const balls = document.querySelectorAll(".ball");
     balls.forEach((ball) => {
@@ -266,6 +263,7 @@ function getRandomArbitrary(min, max) {
 function openModal() {
   modal.style.display = "flex";
   scoremodal.innerHTML = "Your score is: " + score;
+  score = 0;
 }
 
 function closeModal() {
