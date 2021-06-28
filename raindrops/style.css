@@ -21,7 +21,9 @@ body {
 }
 .container {
   display: flex;
-  width: 100%;
+  max-width: 1920px;
+  min-width: 1440px;
+  margin: 0 auto;
   border: 1px solid transparent;
 }
 
@@ -41,6 +43,18 @@ body {
   border-radius: 50%;
   background-color: #b5e7e7;
   border: 2px solid #80d5d5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ball1 {
+  position: absolute;
+  top: -50px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  background-color: #b5e7e7;
+  border: 2px solid red;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -121,4 +135,57 @@ body {
 .enter,
 .clear {
   font-size: 20px;
+}
+
+.modal {
+  width: 100%;
+  height: 100vh;
+  z-index: 1;
+  background-color: rgb(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+
+  align-items: center;
+  justify-content: center;
+}
+.modal_text {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 50%;
+  height: 40%;
+  background-color: #fff;
+  padding: 5% 10%;
+}
+.scoreIs {
+  font-size: 40px;
+}
+.buttons {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.buttons button {
+  width: 100px;
+  height: 50px;
+  color: #fff;
+  background-color: #9cdae7;
+  font-weight: bold;
+  font-size: 15px;
+}
+.buttons button:first-child {
+  margin-right: 5px;
+}
+
+.tutor {
+  margin-left: 5%;
+  margin-top: 30px;
+  width: 120px;
+  height: 40px;
+  color: #000;
+  background-color: #fff;
 }

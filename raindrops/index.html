@@ -9,6 +9,15 @@
   </head>
   <body>
     <div class="container">
+      <div class="modal">
+        <div class="modal_text">
+          <span class="scoreIs"></span>
+          <div class="buttons">
+            <button class="continue">С начала</button>
+            <button class="tutor">Tutorial</button>
+          </div>
+        </div>
+      </div>
       <div class="pole">
         <div class="water"></div>
       </div>
@@ -17,23 +26,25 @@
         <div class="calc">
           <div class="tablo"></div>
           <div class="btns">
-            <div class="btn num">7</div>
-            <div class="btn num">8</div>
-            <div class="btn num">9</div>
+            <div data-key="55" class="btn num">7</div>
+            <div data-key="56" class="btn num">8</div>
+            <div data-key="57" class="btn num">9</div>
             <div class="btn clear">Clear</div>
-            <div class="btn num">4</div>
-            <div class="btn num">5</div>
-            <div class="btn num">6</div>
-            <div class="btn num">1</div>
-            <div class="btn num">2</div>
-            <div class="btn num">3</div>
+            <div data-key="52" class="btn num">4</div>
+            <div data-key="53" class="btn num">5</div>
+            <div data-key="54" class="btn num">6</div>
+            <div data-key="49" class="btn num">1</div>
+            <div data-key="50" class="btn num">2</div>
+            <div data-key="51" class="btn num">3</div>
             <div class="btn enter">Enter</div>
-            <div class="btn num zero">0</div>
+            <div data-key="48" class="btn num zero">0</div>
             <div class="btn delete">Delete</div>
           </div>
         </div>
+        <button class="tutor">Tutorial</button>
       </div>
     </div>
+
     <script charset="utf-8" src="script.js"></script>
   </body>
 </html>
