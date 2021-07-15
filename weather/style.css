@@ -12,12 +12,20 @@
   box-sizing: border-box;
   outline: none;
 }
+body {
+  background-color: #85aac2;
+}
+div {
+  border: 1px solid black;
+}
+
 .container {
+  max-width: 1920px;
+  margin: 0 auto;
   font-family: "Encode Sans SC", sans-serif;
   width: 100%;
   height: 100vh;
   background-size: 100%;
-  background-color: #85aac2;
   color: #fff;
   padding: 5% 10%;
 }
@@ -34,7 +42,8 @@ select {
 }
 button,
 select {
-  padding: 7px;
+  padding: 15px;
+  font-size: 20px;
 }
 .left_btns button:first-child,
 select {
@@ -53,9 +62,9 @@ select {
 input[type="text"] {
   height: 100%;
   border-radius: 5px 0 0 5px;
-  width: 250px;
-  padding-left: 10px;
-  font-size: 10px;
+  width: 450px;
+  padding-left: 20px;
+  font-size: 20px;
   color: #5b5e60;
   background-color: #000;
   opacity: 0.5;
@@ -63,7 +72,6 @@ input[type="text"] {
 button[type="submit"] {
   height: 100%;
   color: #fff;
-  font-size: 10px;
   border-radius: 0 5px 5px 0;
   background-color: #5d6263;
 }
@@ -73,14 +81,17 @@ button[type="submit"] {
 
 .location {
   font-weight: bold;
-  font-size: 25px;
+  font-size: 60px;
   color: #fff;
   text-transform: uppercase;
 }
-
+.date {
+  font-size: 30px;
+  margin-bottom: 20px;
+}
 .weather {
-  height: 300px;
-  border: 1px solid black;
+  height: 100%;
+
   width: 50%;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -95,14 +106,447 @@ button[type="submit"] {
 }
 .next,
 .today {
-  background-color: #fff;
+  position: relative;
   color: black;
-  border: 1px solid black;
 }
 .degrees {
-  font-size: 150px;
+  font-size: 250px;
 }
 .info span {
   display: block;
-  font-size: 12px;
+  font-size: 30px;
+}
+
+.weekday {
+  font-size: 30px;
+}
+.weekdeg {
+  font-size: 60px;
+}
+.next {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+.element {
+  position: absolute;
+  width: 120px;
+  margin: 10px;
+}
+.next .element {
+  right: 0;
+}
+.today .element {
+  right: 0;
+  top: 0;
+  width: 250px;
+}
+.white {
+  fill: #ffffff;
+}
+.gray {
+  fill: #e0e0e0;
+}
+.yellow {
+  fill: #ffeb3b;
+}
+.content {
+  display: flex;
+}
+.mapblock {
+  width: 50%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+.map {
+  width: 400px;
+  height: 400px;
+  margin-left: 26px;
+  background: #b5ddd4;
+  position: relative;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+.map:before {
+  content: "";
+  width: 0;
+  height: 0;
+  position: absolute;
+  right: 100%;
+  top: calc(100% - 12px);
+  right: 0;
+  border-top: 12px solid transparent;
+  border-right: 24px solid #b5ddd4;
+  border-bottom: 12px solid transparent;
+}
+@media screen and (min-width: 1920px) {
+  .container {
+    padding: 100px;
+  }
+}
+@media screen and (max-width: 1750px) and (min-width: 1500px) {
+  .degrees {
+    font-size: 220px;
+  }
+  .info span {
+    font-size: 25px;
+  }
+  .weather {
+    height: 100%;
+  }
+  .next {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .today .element {
+    width: 220px;
+  }
+  .next .element {
+    width: 100px;
+  }
+}
+@media screen and (max-width: 1500px) and (min-width: 1200px) {
+  .degrees {
+    font-size: 160px;
+  }
+  .info span {
+    font-size: 20px;
+  }
+
+  .next {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .today .element {
+    width: 210px;
+    top: 0;
+  }
+
+  .location {
+    font-size: 50px;
+  }
+  .date {
+    font-size: 25px;
+    margin-bottom: 30px;
+  }
+  .weather {
+    height: 100%;
+  }
+
+  .weekday {
+    font-size: 25px;
+  }
+  .weekdeg {
+    font-size: 50px;
+  }
+  .map {
+    width: 350px;
+    height: 300px;
+  }
+  .next .element {
+    width: 80px;
+    top: 20px;
+  }
+}
+@media screen and (max-width: 1200px) and (min-width: 1000px) {
+  input[type="text"] {
+    width: 350px;
+  }
+  .degrees {
+    font-size: 140px;
+  }
+  .info span {
+    font-size: 10px;
+  }
+
+  .next {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .today .element {
+    width: 170px;
+  }
+
+  .location {
+    font-size: 40px;
+  }
+  .date {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .weekday {
+    font-size: 20px;
+  }
+  .weekdeg {
+    font-size: 45px;
+  }
+  .map {
+    width: 300px;
+    height: 250px;
+  }
+  .next .element {
+    width: 60px;
+    top: 20px;
+  }
+}
+@media screen and (max-width: 1000px) and (min-width: 800px) {
+  input[type="text"] {
+    width: 250px;
+  }
+  .degrees {
+    font-size: 120px;
+  }
+  .info span {
+    font-size: 10px;
+  }
+
+  .next {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .today .element {
+    width: 160px;
+  }
+
+  .location {
+    font-size: 40px;
+  }
+  .date {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+
+  .weekday {
+    font-size: 20px;
+  }
+  .weekdeg {
+    font-size: 45px;
+  }
+  .map {
+    width: 200px;
+    height: 200px;
+  }
+  .geoloc {
+    font-size: 10px;
+  }
+  .next .element {
+    width: 60px;
+    top: 20px;
+  }
+}
+
+@media screen and (max-width: 800px) and (min-width: 650px) {
+  .container {
+    height: 100%;
+  }
+  button,
+  select {
+    padding: 15px;
+    font-size: 15px;
+  }
+  input[type="text"] {
+    width: 150px;
+    font-size: 15px;
+    padding-left: 15px;
+  }
+  .content {
+    flex-direction: column;
+  }
+  .degrees {
+    font-size: 140px;
+  }
+  .info span {
+    font-size: 15px;
+  }
+
+  .next {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .today .element {
+    width: 160px;
+  }
+
+  .location {
+    font-size: 40px;
+  }
+  .date {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  .weather {
+    margin: 0 auto 20px;
+
+    width: 90%;
+    height: 350px;
+  }
+
+  .weekday {
+    font-size: 20px;
+  }
+  .weekdeg {
+    font-size: 45px;
+  }
+  .mapblock {
+    width: 100%;
+    align-items: center;
+  }
+  .map {
+    margin: 0 auto;
+    width: 300px;
+    height: 300px;
+  }
+  .next .element {
+    width: 60px;
+    top: 20px;
+  }
+}
+
+@media screen and (max-width: 650px) and (min-width: 400px) {
+  .container {
+    height: 100%;
+  }
+  button,
+  select {
+    padding: 7px;
+    font-size: 10px;
+  }
+  input[type="text"] {
+    width: 100px;
+    font-size: 10px;
+    padding-left: 10px;
+  }
+  .content {
+    flex-direction: column;
+  }
+  .degrees {
+    font-size: 120px;
+  }
+  .info span {
+    font-size: 12px;
+  }
+
+  .next {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .today .element {
+    width: 130px;
+  }
+
+  .location {
+    font-size: 30px;
+  }
+  .date {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+  .weather {
+    margin: 0 auto 20px;
+    width: 90%;
+    height: 250px;
+  }
+
+  .weekday {
+    font-size: 15px;
+  }
+  .weekdeg {
+    font-size: 30px;
+  }
+  .mapblock {
+    width: 100%;
+    align-items: center;
+  }
+  .map {
+    margin: 0 auto;
+    width: 250px;
+    height: 250px;
+  }
+  .next .element {
+    width: 50px;
+    top: 10px;
+  }
+}
+
+@media screen and (max-width: 400px) and (min-width: 320px) {
+  .container {
+    height: 100%;
+  }
+  .left_btns button:first-child,
+  select {
+    margin-right: 5px;
+  }
+  button,
+  select {
+    padding: 5px;
+    font-size: 7px;
+  }
+  input[type="text"] {
+    width: 90px;
+    font-size: 10px;
+    padding-left: 10px;
+  }
+  .content {
+    flex-direction: column;
+  }
+  .degrees {
+    font-size: 100px;
+  }
+  .info span {
+    font-size: 10px;
+  }
+
+  .next {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .today .element {
+    width: 110px;
+  }
+
+  .location {
+    font-size: 30px;
+  }
+  .date {
+    font-size: 15px;
+    margin-bottom: 20px;
+  }
+  .weather {
+    margin: 0 auto 20px;
+    width: 90%;
+    height: 250px;
+  }
+
+  .weekday {
+    font-size: 10px;
+  }
+  .weekdeg {
+    font-size: 25px;
+  }
+  .mapblock {
+    width: 100%;
+    align-items: center;
+  }
+  .map {
+    margin: 0 auto;
+    width: 200px;
+    height: 200px;
+  }
+  .next .element {
+    width: 35px;
+    top: 10px;
+  }
+  .geoloc {
+    font-size: 10px;
+  }
 }
