@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="style.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Encode+Sans+SC:wght@300&display=swap"
+      rel="stylesheet"
+    />
+    <title>Weather-app</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="buttons">
+        <div class="left_btns">
+          <button>e</button>
+          <select id="number">
+            <option value="first2">EN</option>
+            <option value="second2">RUS</option>
+          </select>
+          <button class="faren">`F</button><button class="cels">`C</button>
+        </div>
+        <div class="right_btns">
+          <input type="text" placeholder="Search city" /><button type="submit">
+            SEARCH
+          </button>
+        </div>
+      </div>
+      <div class="title">
+        <span class="location">Minsk, Belarus</span>
+        <span class="date">Mon 28 October 17:23:12</span>
+      </div>
+
+      <div class="content">
+        <div class="weather">
+          <div class="today">
+            <div class="degrees">10`</div>
+            <div class="info">
+              <span>overcast feels like: 7`</span>
+              <span>wind: 2m/s</span>
+              <span>humidity: 83%</span>
+            </div>
+          </div>
+          <div class="next"></div>
+          <div class="next"></div>
+          <div class="next"></div>
+        </div>
+        <div class="map"></div>
+      </div>
+    </div>
+    <script charset="utf-8" src="script.js"></script>
+  </body>
+</html>

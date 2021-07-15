@@ -11,9 +11,6 @@
   -khtml-user-select: none;
   box-sizing: border-box;
 }
-/* div {
-  border: 1px solid black;
-} */
 
 html,
 body {
@@ -68,6 +65,7 @@ body {
   width: 100%;
   background-color: #9cdae7;
   height: 150px;
+  transition: 1s all;
 }
 
 .right-panel {
