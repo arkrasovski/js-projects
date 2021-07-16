@@ -33,8 +33,7 @@ body {
   margin-bottom: 30px;
 }
 
-.left_btns button:first-child,
-select {
+.left_btns button:first-child {
   border-radius: 5px;
 }
 .left_btns button:first-child {
@@ -54,55 +53,89 @@ select {
 .icon-image {
   font-size: 15px;
 }
-button,
-select {
+button {
   background-color: #5b5e61;
   color: #fff;
   padding: 15px;
   font-size: 20px;
 }
 .left_btns button:first-child,
-select {
+.select {
   margin-right: 10px;
 }
-.select_wrapper {
-  display: flex;
+
+/*Custom select*/
+.select {
+  background-color: #5b5e61;
+  border-radius: 5px;
   position: relative;
-}
-.select_wrapper::before {
-  content: "";
-  position: absolute;
-  top: 38%;
-  right: 20px;
-  transform: translateY(-50%);
-  display: block;
-  transform: rotate(45deg);
-  -webkit-transform: rotate(45deg);
-  pointer-events: none;
-  border: solid #fff;
-  border-width: 0 3px 3px 0;
-  display: inline-block;
-  padding: 3px;
-}
-select {
   height: 100%;
-  appearance: none;
-  -moz-appearance: none;
-  -webkit-appearance: none;
-  cursor: pointer;
+  width: 80px;
 }
-select::-ms-expand {
-  display: none;
+.select.is-active .select__body {
+  max-height: 200%;
+  transition: max-height 0.5s;
+  visibility: visible;
 }
 
-option {
-  border-radius: 5px;
+.select__header {
+  height: 100%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+.select__current {
+  font-size: 20px;
+  padding: 0 15px;
+}
+
+.select__icon {
+  position: absolute;
+  top: 35%;
+  width: 10px;
+  height: 10px;
+  border-top: 1px solid #fff;
+  border-right: 1px solid #fff;
+  right: 15px;
+  transform: rotate(135deg);
+}
+
+.select__body {
+  background-color: #5b5e61;
+  overflow: hidden;
+  border-radius: 0 0 5px 5px;
+  visibility: hidden;
+  border-top: 0;
+  max-height: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 100%;
+}
+.select__item {
+  cursor: pointer;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 8px;
+}
+
+.select__item:hover {
+  background-color: rgb(104, 102, 102);
 }
 .faren {
   border-radius: 5px 0 0 5px;
+  background-color: black;
+  opacity: 0.5;
 }
 .cels {
   border-radius: 0 5px 5px 0;
+  opacity: 0.5;
+  background-color: black;
+}
+.deg-active {
+  background-color: #5b5e61;
+  opacity: 1;
 }
 .left_btns {
   display: flex;
@@ -398,8 +431,7 @@ button[type="submit"] {
   .container {
     height: 100%;
   }
-  button,
-  select {
+  button {
     padding: 15px;
     font-size: 15px;
   }
@@ -466,8 +498,7 @@ button[type="submit"] {
   .container {
     height: 100%;
   }
-  button,
-  select {
+  button {
     padding: 7px;
     font-size: 10px;
   }
@@ -536,11 +567,30 @@ button[type="submit"] {
     width: 50px;
     top: 10px;
   }
-  .select_wrapper::before {
-    top: 37%;
-    right: 15px;
-    border-width: 0 1px 1px 0;
-    padding: 2px;
+  .select {
+    width: 30px;
+  }
+  .select.is-active .select__body {
+    max-height: 200%;
+  }
+
+  .select__current {
+    font-size: 7px;
+    padding-left: 4px;
+  }
+  .select__icon {
+    top: 40%;
+    width: 3px;
+    height: 3px;
+    border-top: 0.5px solid #fff;
+    border-right: 0.5px solid #fff;
+    right: 7px;
+  }
+
+  .select__item {
+    font-size: 7px;
+    line-height: 10px;
+    padding: 4px;
   }
 }
 
@@ -548,12 +598,10 @@ button[type="submit"] {
   .container {
     height: 100%;
   }
-  .left_btns button:first-child,
-  select {
+  .left_btns button:first-child {
     margin-right: 5px;
   }
-  button,
-  select {
+  button {
     padding: 5px;
     font-size: 7px;
   }
@@ -579,6 +627,31 @@ button[type="submit"] {
   }
   .info span {
     font-size: 10px;
+  }
+  .select {
+    width: 30px;
+  }
+  .select.is-active .select__body {
+    max-height: 200%;
+  }
+
+  .select__current {
+    font-size: 7px;
+    padding-left: 4px;
+  }
+  .select__icon {
+    top: 40%;
+    width: 3px;
+    height: 3px;
+    border-top: 0.5px solid #fff;
+    border-right: 0.5px solid #fff;
+    right: 7px;
+  }
+
+  .select__item {
+    font-size: 7px;
+    line-height: 10px;
+    padding: 4px;
   }
 
   .next {
@@ -624,11 +697,5 @@ button[type="submit"] {
   }
   .geoloc {
     font-size: 10px;
-  }
-  .select_wrapper::before {
-    top: 40%;
-    right: 10px;
-    border-width: 0 0.6px 0.6px 0;
-    padding: 1px;
   }
 }

@@ -19,12 +19,26 @@
       <div class="buttons">
         <div class="left_btns">
           <button><span class="icon-image"></span><span class="icon-loop2"></span></button>
-          <div class="select_wrapper"><select id="number">
-            <option value="first2">EN</option>
-            <option value="second2">RUS</option>
-          </select></div>
+
+          <div class="select">
+            <div class="select__header">
+              <span class="select__current">rus</span>
+              <div class="select__icon">	
+                	
+	
+               </div>
+            </div>
           
-          <button class="faren">&degF</button><button class="cels">&degC</button>
+            <div class="select__body">
+              <div class="select__item">rus</div>
+              <div class="select__item">en</div>
+          
+            </div>
+          </div>
+
+          
+          
+          <button class="faren deg-active">&degF</button><button class="cels">&degC</button>
         </div>
         <div class="right_btns">
           <input type="text" placeholder="Search city" /><button type="submit">
