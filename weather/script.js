@@ -2,6 +2,7 @@ const container = document.querySelector(".container");
 const ChangeBackground = document.querySelector(
   ".left_btns button:first-child"
 );
+let turn = 1;
 const retr = document.querySelector(".icon-loop2");
 async function getLinkToImage() {
   rotateLoop();
@@ -12,7 +13,7 @@ async function getLinkToImage() {
   container.style.cssText = `background-image: url("${data.urls.regular}");`;
 }
 getLinkToImage();
-let turn = 1;
+
 function rotateLoop() {
   retr.style.cssText = `transform: rotate(${turn}turn);`;
   turn += 1;
@@ -353,6 +354,19 @@ function GetGeo() {
       location1.innerHTML = `${jsonResponse.city}, ${
         country[jsonResponse.country]
       }`;
+      getWeather(jsonResponse.city);
+      setInterval(() => {
+        getWeather(jsonResponse.city);
+      }, 10800000);
+
+      mapboxgl.accessToken =
+        "pk.eyJ1IjoiYXJrcmFzb3Zza2kiLCJhIjoiY2tyODNrZzM2MDh3cTJ6cDg2a3IxZ3AwYyJ9.j7vqD2BeSEBEH7J7NMRwVA";
+      var map = new mapboxgl.Map({
+        container: "map", // container id
+        style: "mapbox://styles/mapbox/streets-v11", // style URL
+        center: [longLat[1], longLat[0]], // starting position [lng, lat]
+        zoom: 9, // starting zoom
+      });
     });
 }
 GetGeo();
@@ -553,7 +567,7 @@ const icons = {
 `,
 };
 
-async function getWeather(location = "Минск") {
+async function getWeather(location) {
   const url = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&lang=ua&units=metric&APPID=2849a388050fed5faf7c5e021a44c7c2`;
   const res = await fetch(url);
   const data = await res.json();
@@ -623,5 +637,3 @@ async function getWeather(location = "Минск") {
 
   return false;
 }
-getWeather();
-setInterval(getWeather, 10800000);
