@@ -1,14 +1,24 @@
 const container = document.querySelector(".container");
-
+const ChangeBackground = document.querySelector(
+  ".left_btns button:first-child"
+);
+const retr = document.querySelector(".icon-loop2");
 async function getLinkToImage() {
+  rotateLoop();
   const url =
     "https://api.unsplash.com/photos/random?query=morning&client_id=e2077ad31a806c894c460aec8f81bc2af4d09c4f8104ae3177bb809faf0eac17";
   const res = await fetch(url);
   const data = await res.json();
   container.style.cssText = `background-image: url("${data.urls.regular}");`;
-  console.log(data.urls.regular);
 }
 getLinkToImage();
+let turn = 1;
+function rotateLoop() {
+  retr.style.cssText = `transform: rotate(${turn}turn);`;
+  turn += 1;
+}
+
+ChangeBackground.addEventListener("click", getLinkToImage);
 
 let select = function () {
   let selectHeader = document.querySelectorAll(".select__header");
@@ -43,3 +53,575 @@ let select = function () {
 };
 
 select();
+
+const latitude = document.querySelector(".latit");
+const longitude = document.querySelector(".longt");
+const location1 = document.querySelector(".location");
+const datePanel = document.querySelector(".date");
+const nextSlides = document.querySelectorAll(".next .weekday");
+const nextDegs = document.querySelectorAll(".next .weekdeg");
+const todayDeg = document.querySelector(".today .degrees");
+const infoSpans = document.querySelectorAll(".info span");
+
+console.log(todayDeg.parentElement);
+
+var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0,
+};
+
+function success(pos) {
+  var crd = pos.coords;
+}
+
+function error(err) {
+  alert(`ERROR(${err.code}): ${err.message}`);
+}
+
+navigator.geolocation.getCurrentPosition(success, error, options);
+
+function GetGeo() {
+  const country = {
+    BD: "Bangladesh",
+    BE: "Belgium",
+    BF: "Burkina Faso",
+    BG: "Bulgaria",
+    BA: "Bosnia and Herzegovina",
+    BB: "Barbados",
+    WF: "Wallis and Futuna",
+    BL: "Saint Barthelemy",
+    BM: "Bermuda",
+    BN: "Brunei",
+    BO: "Bolivia",
+    BH: "Bahrain",
+    BI: "Burundi",
+    BJ: "Benin",
+    BT: "Bhutan",
+    JM: "Jamaica",
+    BV: "Bouvet Island",
+    BW: "Botswana",
+    WS: "Samoa",
+    BQ: "Bonaire, Saint Eustatius and Saba ",
+    BR: "Brazil",
+    BS: "Bahamas",
+    JE: "Jersey",
+    BY: "Belarus",
+    BZ: "Belize",
+    RU: "Russia",
+    RW: "Rwanda",
+    RS: "Serbia",
+    TL: "East Timor",
+    RE: "Reunion",
+    TM: "Turkmenistan",
+    TJ: "Tajikistan",
+    RO: "Romania",
+    TK: "Tokelau",
+    GW: "Guinea-Bissau",
+    GU: "Guam",
+    GT: "Guatemala",
+    GS: "South Georgia and the South Sandwich Islands",
+    GR: "Greece",
+    GQ: "Equatorial Guinea",
+    GP: "Guadeloupe",
+    JP: "Japan",
+    GY: "Guyana",
+    GG: "Guernsey",
+    GF: "French Guiana",
+    GE: "Georgia",
+    GD: "Grenada",
+    GB: "United Kingdom",
+    GA: "Gabon",
+    SV: "El Salvador",
+    GN: "Guinea",
+    GM: "Gambia",
+    GL: "Greenland",
+    GI: "Gibraltar",
+    GH: "Ghana",
+    OM: "Oman",
+    TN: "Tunisia",
+    JO: "Jordan",
+    HR: "Croatia",
+    HT: "Haiti",
+    HU: "Hungary",
+    HK: "Hong Kong",
+    HN: "Honduras",
+    HM: "Heard Island and McDonald Islands",
+    VE: "Venezuela",
+    PR: "Puerto Rico",
+    PS: "Palestinian Territory",
+    PW: "Palau",
+    PT: "Portugal",
+    SJ: "Svalbard and Jan Mayen",
+    PY: "Paraguay",
+    IQ: "Iraq",
+    PA: "Panama",
+    PF: "French Polynesia",
+    PG: "Papua New Guinea",
+    PE: "Peru",
+    PK: "Pakistan",
+    PH: "Philippines",
+    PN: "Pitcairn",
+    PL: "Poland",
+    PM: "Saint Pierre and Miquelon",
+    ZM: "Zambia",
+    EH: "Western Sahara",
+    EE: "Estonia",
+    EG: "Egypt",
+    ZA: "South Africa",
+    EC: "Ecuador",
+    IT: "Italy",
+    VN: "Vietnam",
+    SB: "Solomon Islands",
+    ET: "Ethiopia",
+    SO: "Somalia",
+    ZW: "Zimbabwe",
+    SA: "Saudi Arabia",
+    ES: "Spain",
+    ER: "Eritrea",
+    ME: "Montenegro",
+    MD: "Moldova",
+    MG: "Madagascar",
+    MF: "Saint Martin",
+    MA: "Morocco",
+    MC: "Monaco",
+    UZ: "Uzbekistan",
+    MM: "Myanmar",
+    ML: "Mali",
+    MO: "Macao",
+    MN: "Mongolia",
+    MH: "Marshall Islands",
+    MK: "Macedonia",
+    MU: "Mauritius",
+    MT: "Malta",
+    MW: "Malawi",
+    MV: "Maldives",
+    MQ: "Martinique",
+    MP: "Northern Mariana Islands",
+    MS: "Montserrat",
+    MR: "Mauritania",
+    IM: "Isle of Man",
+    UG: "Uganda",
+    TZ: "Tanzania",
+    MY: "Malaysia",
+    MX: "Mexico",
+    IL: "Israel",
+    FR: "France",
+    IO: "British Indian Ocean Territory",
+    SH: "Saint Helena",
+    FI: "Finland",
+    FJ: "Fiji",
+    FK: "Falkland Islands",
+    FM: "Micronesia",
+    FO: "Faroe Islands",
+    NI: "Nicaragua",
+    NL: "Netherlands",
+    NO: "Norway",
+    NA: "Namibia",
+    VU: "Vanuatu",
+    NC: "New Caledonia",
+    NE: "Niger",
+    NF: "Norfolk Island",
+    NG: "Nigeria",
+    NZ: "New Zealand",
+    NP: "Nepal",
+    NR: "Nauru",
+    NU: "Niue",
+    CK: "Cook Islands",
+    XK: "Kosovo",
+    CI: "Ivory Coast",
+    CH: "Switzerland",
+    CO: "Colombia",
+    CN: "China",
+    CM: "Cameroon",
+    CL: "Chile",
+    CC: "Cocos Islands",
+    CA: "Canada",
+    CG: "Republic of the Congo",
+    CF: "Central African Republic",
+    CD: "Democratic Republic of the Congo",
+    CZ: "Czech Republic",
+    CY: "Cyprus",
+    CX: "Christmas Island",
+    CR: "Costa Rica",
+    CW: "Curacao",
+    CV: "Cape Verde",
+    CU: "Cuba",
+    SZ: "Swaziland",
+    SY: "Syria",
+    SX: "Sint Maarten",
+    KG: "Kyrgyzstan",
+    KE: "Kenya",
+    SS: "South Sudan",
+    SR: "Suriname",
+    KI: "Kiribati",
+    KH: "Cambodia",
+    KN: "Saint Kitts and Nevis",
+    KM: "Comoros",
+    ST: "Sao Tome and Principe",
+    SK: "Slovakia",
+    KR: "South Korea",
+    SI: "Slovenia",
+    KP: "North Korea",
+    KW: "Kuwait",
+    SN: "Senegal",
+    SM: "San Marino",
+    SL: "Sierra Leone",
+    SC: "Seychelles",
+    KZ: "Kazakhstan",
+    KY: "Cayman Islands",
+    SG: "Singapore",
+    SE: "Sweden",
+    SD: "Sudan",
+    DO: "Dominican Republic",
+    DM: "Dominica",
+    DJ: "Djibouti",
+    DK: "Denmark",
+    VG: "British Virgin Islands",
+    DE: "Germany",
+    YE: "Yemen",
+    DZ: "Algeria",
+    US: "United States",
+    UY: "Uruguay",
+    YT: "Mayotte",
+    UM: "United States Minor Outlying Islands",
+    LB: "Lebanon",
+    LC: "Saint Lucia",
+    LA: "Laos",
+    TV: "Tuvalu",
+    TW: "Taiwan",
+    TT: "Trinidad and Tobago",
+    TR: "Turkey",
+    LK: "Sri Lanka",
+    LI: "Liechtenstein",
+    LV: "Latvia",
+    TO: "Tonga",
+    LT: "Lithuania",
+    LU: "Luxembourg",
+    LR: "Liberia",
+    LS: "Lesotho",
+    TH: "Thailand",
+    TF: "French Southern Territories",
+    TG: "Togo",
+    TD: "Chad",
+    TC: "Turks and Caicos Islands",
+    LY: "Libya",
+    VA: "Vatican",
+    VC: "Saint Vincent and the Grenadines",
+    AE: "United Arab Emirates",
+    AD: "Andorra",
+    AG: "Antigua and Barbuda",
+    AF: "Afghanistan",
+    AI: "Anguilla",
+    VI: "U.S. Virgin Islands",
+    IS: "Iceland",
+    IR: "Iran",
+    AM: "Armenia",
+    AL: "Albania",
+    AO: "Angola",
+    AQ: "Antarctica",
+    AS: "American Samoa",
+    AR: "Argentina",
+    AU: "Australia",
+    AT: "Austria",
+    AW: "Aruba",
+    IN: "India",
+    AX: "Aland Islands",
+    AZ: "Azerbaijan",
+    IE: "Ireland",
+    ID: "Indonesia",
+    UA: "Ukraine",
+    QA: "Qatar",
+    MZ: "Mozambique",
+  };
+  fetch("https://ipinfo.io/json?token=441aae3002c36f")
+    .then((response) => response.json())
+    .then((jsonResponse) => {
+      const longLat = jsonResponse.loc.split(",");
+
+      latitude.innerHTML = `Latitude: ${
+        (longLat[0] * 100) % 10 === 0
+          ? Math.floor(longLat[0] * 100) / 100 + "0"
+          : Math.floor(longLat[0] * 100) / 100
+      }`;
+      longitude.innerHTML = `Longitude: ${
+        (longLat[1] * 100) % 10 === 0
+          ? Math.floor(longLat[1] * 100) / 100 + "0"
+          : Math.floor(longLat[1] * 100) / 100
+      }`;
+
+      location1.innerHTML = `${jsonResponse.city}, ${
+        country[jsonResponse.country]
+      }`;
+    });
+}
+GetGeo();
+
+function getTime() {
+  let date = new Date();
+  let hours = date.getHours();
+  let minutes = date.getMinutes();
+  let seconds = date.getSeconds();
+  let day = date.getDate();
+
+  let month = date.getMonth();
+  let weekday = date.getDay();
+
+  weekday = chooseWeekDay(weekday);
+  switch (month) {
+    case 0:
+      month = "January";
+      break;
+    case 1:
+      month = "February";
+      break;
+    case 2:
+      month = "March";
+      break;
+    case 3:
+      month = "April";
+      break;
+    case 4:
+      month = "May";
+      break;
+    case 5:
+      month = "June";
+      break;
+    case 6:
+      month = "July";
+      break;
+    case 7:
+      month = "August";
+      break;
+    case 8:
+      month = "September";
+      break;
+    case 9:
+      month = "October";
+      break;
+    case 10:
+      month = "November";
+      break;
+    case 11:
+      month = "December";
+      break;
+  }
+  datePanel.innerHTML = `${weekday} ${day} ${month} ${
+    (hours < 10 ? "0" : "") + hours
+  }:${(minutes < 10 ? "0" : "") + minutes}:${
+    (seconds < 10 ? "0" : "") + seconds
+  }`;
+  weekday = date.getDay();
+  if (weekday <= 7) {
+    weekday++;
+  } else {
+    weekday = 1;
+  }
+
+  nextSlides.forEach((next) => {
+    if (weekday <= 7) {
+      next.innerHTML = `${chooseWeekDay(weekday++)}`;
+    } else {
+      weekday = 1;
+      next.innerHTML = `${chooseWeekDay(weekday++)}`;
+    }
+  });
+}
+
+setInterval(getTime, 1000);
+
+function chooseWeekDay(weekday) {
+  switch (weekday) {
+    case 1:
+      weekday = "Mon";
+      break;
+    case 2:
+      weekday = "Tue";
+      break;
+    case 3:
+      weekday = "Wen";
+      break;
+    case 4:
+      weekday = "Thu";
+      break;
+    case 5:
+      weekday = "Fri";
+      break;
+    case 6:
+      weekday = "Sat";
+
+      break;
+    case 7:
+      weekday = "Sun";
+      break;
+  }
+  return weekday;
+}
+
+const icons = {
+  Clouds: `
+  <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 60.7 40" style="enable-background:new 0 0 60.7 40;" xml:space="preserve">
+    <g id="Cloud_1">
+      <g id="White_cloud_1">
+        <path id="XMLID_2_" class="white" d="M47.2,40H7.9C3.5,40,0,36.5,0,32.1l0,0c0-4.3,3.5-7.9,7.9-7.9h39.4c4.3,0,7.9,3.5,7.9,7.9v0 C55.1,36.5,51.6,40,47.2,40z"/>
+        <circle id="XMLID_3_" class="white" cx="17.4" cy="22.8" r="9.3"/>
+        <circle id="XMLID_4_" class="white" cx="34.5" cy="21.1" r="15.6"/>
+        <animateTransform attributeName="transform"
+          attributeType="XML"
+          dur="6s"
+          keyTimes="0;0.5;1"
+          repeatCount="indefinite"
+          type="translate"
+          values="0;5;0"
+          calcMode="linear">
+        </animateTransform>
+      </g>
+      <g id="Gray_cloud_1">
+        <path id="XMLID_6_" class="gray" d="M54.7,22.3H33.4c-3.3,0-6-2.7-6-6v0c0-3.3,2.7-6,6-6h21.3c3.3,0,6,2.7,6,6v0 C60.7,19.6,58,22.3,54.7,22.3z"/>
+        <circle id="XMLID_7_" class="gray" cx="45.7" cy="10.7" r="10.7"/>
+        <animateTransform attributeName="transform"
+          attributeType="XML"
+          dur="6s"
+          keyTimes="0;0.5;1"
+          repeatCount="indefinite"
+          type="translate"
+          values="0;-3;0"
+          calcMode="linear">
+        </animateTransform>
+      </g>
+    </g>
+  </svg>
+
+`,
+  Rain: `
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 55.1 60" style="enable-background:new 0 0 55.1 49.5;" xml:space="preserve">
+  <g id="Cloud_2">
+    <g id="Rain_2">
+      <path id="rain_2_left" class="white" d="M20.7,46.4c0,1.7-1.4,3.1-3.1,3.1s-3.1-1.4-3.1-3.1c0-1.7,3.1-7.8,3.1-7.8 S20.7,44.7,20.7,46.4z"></path>
+      <path id="rain_2_mid" class="white" d="M31.4,46.4c0,1.7-1.4,3.1-3.1,3.1c-1.7,0-3.1-1.4-3.1-3.1c0-1.7,3.1-7.8,3.1-7.8 S31.4,44.7,31.4,46.4z"></path>
+      <path id="rain_2_right" class="white" d="M41.3,46.4c0,1.7-1.4,3.1-3.1,3.1c-1.7,0-3.1-1.4-3.1-3.1c0-1.7,3.1-7.8,3.1-7.8 S41.3,44.7,41.3,46.4z"></path>
+      <animateTransform attributeName="transform"
+        attributeType="XML"
+        dur="1s"
+        keyTimes="0;1"
+        repeatCount="indefinite"
+        type="translate"
+        values="0 0;0 10"
+        calcMode="linear">
+      </animateTransform>
+      <animate attributeType="CSS"
+      attributeName="opacity"
+      attributeType="XML"
+      dur="1s"
+      keyTimes="0;1"
+      repeatCount="indefinite"
+      values="1;0"
+      calcMode="linear"/>
+    </g>
+    <g id="White_cloud_2">
+      <path id="XMLID_14_" class="white" d="M47.2,34.5H7.9c-4.3,0-7.9-3.5-7.9-7.9l0,0c0-4.3,3.5-7.9,7.9-7.9h39.4c4.3,0,7.9,3.5,7.9,7.9 v0C55.1,30.9,51.6,34.5,47.2,34.5z"/>
+      <circle id="XMLID_13_" class="white" cx="17.4" cy="17.3" r="9.3"/>
+      <circle id="XMLID_10_" class="white" cx="34.5" cy="15.6" r="15.6"/>
+    </g>
+  </g>
+</svg>
+`,
+  Clear: `
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 44.9 44.9" style="enable-background:new 0 0 44.9 44.9;" xml:space="preserve" height="50%" width="100%">
+  <g id="Sun">
+    <circle id="XMLID_61_" class="yellow" cx="22.4" cy="22.6" r="11"/>
+    <g>
+      <path id="XMLID_60_" class="yellow" d="M22.6,8.1h-0.3c-0.3,0-0.6-0.3-0.6-0.6v-7c0-0.3,0.3-0.6,0.6-0.6l0.3,0c0.3,0,0.6,0.3,0.6,0.6 v7C23.2,7.8,22.9,8.1,22.6,8.1z"/>
+      <path id="XMLID_59_" class="yellow" d="M22.6,36.8h-0.3c-0.3,0-0.6,0.3-0.6,0.6v7c0,0.3,0.3,0.6,0.6,0.6h0.3c0.3,0,0.6-0.3,0.6-0.6v-7 C23.2,37,22.9,36.8,22.6,36.8z"/>
+      <path id="XMLID_58_" class="yellow" d="M8.1,22.3v0.3c0,0.3-0.3,0.6-0.6,0.6h-7c-0.3,0-0.6-0.3-0.6-0.6l0-0.3c0-0.3,0.3-0.6,0.6-0.6h7 C7.8,21.7,8.1,21.9,8.1,22.3z"/>
+      <path id="XMLID_57_" class="yellow" d="M36.8,22.3v0.3c0,0.3,0.3,0.6,0.6,0.6h7c0.3,0,0.6-0.3,0.6-0.6v-0.3c0-0.3-0.3-0.6-0.6-0.6h-7 C37,21.7,36.8,21.9,36.8,22.3z"/>
+      <path id="XMLID_56_" class="yellow" d="M11.4,31.6l0.2,0.3c0.2,0.2,0.2,0.6-0.1,0.8l-5.3,4.5c-0.2,0.2-0.6,0.2-0.8-0.1l-0.2-0.3 c-0.2-0.2-0.2-0.6,0.1-0.8l5.3-4.5C10.9,31.4,11.2,31.4,11.4,31.6z"/>
+      <path id="XMLID_55_" class="yellow" d="M33.2,13l0.2,0.3c0.2,0.2,0.6,0.3,0.8,0.1l5.3-4.5c0.2-0.2,0.3-0.6,0.1-0.8l-0.2-0.3 c-0.2-0.2-0.6-0.3-0.8-0.1l-5.3,4.5C33,12.4,33,12.7,33.2,13z"/>
+      <path id="XMLID_54_" class="yellow" d="M11.4,13.2l0.2-0.3c0.2-0.2,0.2-0.6-0.1-0.8L6.3,7.6C6.1,7.4,5.7,7.5,5.5,7.7L5.3,7.9 C5.1,8.2,5.1,8.5,5.4,8.7l5.3,4.5C10.9,13.5,11.2,13.5,11.4,13.2z"/>
+      <path id="XMLID_53_" class="yellow" d="M33.2,31.9l0.2-0.3c0.2-0.2,0.6-0.3,0.8-0.1l5.3,4.5c0.2,0.2,0.3,0.6,0.1,0.8l-0.2,0.3 c-0.2,0.2-0.6,0.3-0.8,0.1l-5.3-4.5C33,32.5,33,32.1,33.2,31.9z"/>
+      <animate attributeType="CSS"
+        attributeName="opacity"
+        attributeType="XML"
+        dur="0.5s"
+        keyTimes="0;0.5;1"
+        repeatCount="indefinite"
+        values="1;0.6;1"
+        calcMode="linear"/>
+    </g>
+  </g>
+</svg>
+`,
+};
+
+async function getWeather(location = "Минск") {
+  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&lang=ua&units=metric&APPID=2849a388050fed5faf7c5e021a44c7c2`;
+  const res = await fetch(url);
+  const data = await res.json();
+
+  todayDeg.innerHTML = `${Math.round(data.list[0].main.temp)}&deg`;
+  infoSpans.forEach((infospan, index) => {
+    switch (index) {
+      case 0:
+        infospan.innerHTML = `overcast feels like: ${Math.round(
+          data.list[0].main.feels_like
+        )}&deg`;
+        break;
+      case 1:
+        infospan.innerHTML = `wind: ${data.list[0].wind.speed} m/s`;
+        break;
+      case 2:
+        infospan.innerHTML = `humidity: ${data.list[0].main.humidity}%`;
+        break;
+    }
+  });
+  nextDegs.forEach((next, index) => {
+    next.innerHTML = `${Math.round(data.list[++index].main.temp)}&deg`;
+  });
+  console.log(data.list[0].weather[0].main);
+
+  let element = document.createElement("div");
+  element.classList.add("element");
+  switch (data.list[0].weather[0].main) {
+    case "Clouds":
+      element.innerHTML = icons["Clouds"];
+      todayDeg.parentElement.append(element);
+      break;
+    case "Rain":
+      element.innerHTML = icons["Rain"];
+      todayDeg.parentElement.append(element);
+      break;
+    case "Clear":
+      element.innerHTML = icons["Clear"];
+      todayDeg.parentElement.append(element);
+      break;
+  }
+
+  console.log(nextDegs);
+  nextDegs.forEach((next, index) => {
+    console.log("kek");
+    switch (data.list[++index].weather[0].main) {
+      case "Clouds":
+        element = document.createElement("div");
+        element.classList.add("element");
+        element.innerHTML = icons["Clouds"];
+        next.parentElement.append(element);
+        break;
+      case "Rain":
+        element = document.createElement("div");
+        element.classList.add("element");
+        element.innerHTML = icons["Rain"];
+        next.parentElement.append(element);
+        break;
+      case "Clear":
+        element = document.createElement("div");
+        element.classList.add("element");
+        element.innerHTML = icons["Clear"];
+        next.parentElement.append(element);
+        break;
+    }
+  });
+
+  return false;
+}
+getWeather();
+setInterval(getWeather, 10800000);

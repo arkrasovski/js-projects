@@ -17,6 +17,7 @@ body {
 }
 
 .container {
+  transition: all 5s ease;
   max-width: 1920px;
   margin: 0 auto;
   font-family: "Encode Sans SC", sans-serif;
@@ -49,6 +50,10 @@ body {
 .icon-loop2 {
   font-size: 40px;
   opacity: 0.5;
+  transition: transform 0.5s ease;
+}
+.trans {
+  transform: rotate(1turn);
 }
 .icon-image {
   font-size: 15px;
@@ -58,6 +63,7 @@ button {
   color: #fff;
   padding: 15px;
   font-size: 20px;
+  cursor: pointer;
 }
 .left_btns button:first-child,
 .select {
