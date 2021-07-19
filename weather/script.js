@@ -726,6 +726,7 @@ farenBtn.addEventListener("click", () => {
     farenBtn.classList.toggle("deg-active");
     celsBtn.classList.toggle("deg-active");
   }
+
   changeMeasure(true);
 });
 
@@ -743,23 +744,35 @@ function changeMeasure(faren) {
   } else {
     localStorage.removeItem("Fareng");
   }
-  getWeather(localStorage.getItem("cityName"));
+  if (localStorage.getItem("cityName")) {
+    getWeather(localStorage.getItem("cityName"));
+  } else {
+    getWeather();
+  }
 }
 
 input.addEventListener("keypress", setCity);
 submit.addEventListener("click", () => {
-  getWeather(input.value);
-  localStorage.setItem("cityName", input.value);
-  event.preventDefault();
-  getCoords(input.value);
-});
-
-function setCity(event) {
-  if (event.code === "Enter") {
+  if (input.value != "" && input.value.replace(/\s/g, "") != "") {
     getWeather(input.value);
     localStorage.setItem("cityName", input.value);
     event.preventDefault();
     getCoords(input.value);
+    input.value = "";
+  }
+});
+
+function setCity(event) {
+  if (
+    event.code === "Enter" &&
+    input.value != "" &&
+    input.value.replace(/\s/g, "") != ""
+  ) {
+    getWeather(input.value);
+    localStorage.setItem("cityName", input.value);
+    event.preventDefault();
+    getCoords(input.value);
+    input.value = "";
   }
 }
 
@@ -788,3 +801,5 @@ function getCoords(location) {
       createMap(lng, lat);
     });
 }
+console.log();
+localStorage.removeItem("cityName");
