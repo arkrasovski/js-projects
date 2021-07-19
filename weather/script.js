@@ -69,8 +69,6 @@ const celsBtn = document.querySelector(".cels");
 const input = document.querySelector('input[type="text"]');
 const submit = document.querySelector('button[type="submit"]');
 
-console.log(submit);
-
 var options = {
   enableHighAccuracy: true,
   timeout: 5000,
@@ -346,21 +344,27 @@ function GetGeo() {
     .then((response) => response.json())
     .then((jsonResponse) => {
       const longLat = jsonResponse.loc.split(",");
+      if (!localStorage.getItem("cityName")) {
+        latitude.innerHTML = `Latitude: ${
+          (longLat[0] * 100) % 10 === 0
+            ? Math.floor(longLat[0] * 100) / 100 + "0"
+            : Math.floor(longLat[0] * 100) / 100
+        }`;
+        longitude.innerHTML = `Longitude: ${
+          (longLat[1] * 100) % 10 === 0
+            ? Math.floor(longLat[1] * 100) / 100 + "0"
+            : Math.floor(longLat[1] * 100) / 100
+        }`;
+      }
 
-      latitude.innerHTML = `Latitude: ${
-        (longLat[0] * 100) % 10 === 0
-          ? Math.floor(longLat[0] * 100) / 100 + "0"
-          : Math.floor(longLat[0] * 100) / 100
-      }`;
-      longitude.innerHTML = `Longitude: ${
-        (longLat[1] * 100) % 10 === 0
-          ? Math.floor(longLat[1] * 100) / 100 + "0"
-          : Math.floor(longLat[1] * 100) / 100
-      }`;
+      if (localStorage.getItem("cityName")) {
+        location1.innerHTML = getCoords(localStorage.getItem("cityName"));
+      } else {
+        location1.innerHTML = `${jsonResponse.city}, ${
+          country[jsonResponse.country]
+        }`;
+      }
 
-      location1.innerHTML = `${jsonResponse.city}, ${
-        country[jsonResponse.country]
-      }`;
       if (localStorage.getItem("cityName")) {
         getWeather(localStorage.getItem("cityName"));
         setInterval(() => {
@@ -372,19 +376,22 @@ function GetGeo() {
           getWeather(jsonResponse.city);
         }, 10800000);
       }
-
-      mapboxgl.accessToken =
-        "pk.eyJ1IjoiYXJrcmFzb3Zza2kiLCJhIjoiY2tyODNrZzM2MDh3cTJ6cDg2a3IxZ3AwYyJ9.j7vqD2BeSEBEH7J7NMRwVA";
-      var map = new mapboxgl.Map({
-        container: "map", // container id
-        style: "mapbox://styles/mapbox/streets-v11", // style URL
-        center: [longLat[1], longLat[0]], // starting position [lng, lat]
-        zoom: 9, // starting zoom
-      });
+      createMap(longLat[1], longLat[0]);
       cityLocation = jsonResponse.city;
     });
 }
 GetGeo();
+
+function createMap(lat, long) {
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoiYXJrcmFzb3Zza2kiLCJhIjoiY2tyODNrZzM2MDh3cTJ6cDg2a3IxZ3AwYyJ9.j7vqD2BeSEBEH7J7NMRwVA";
+  var map = new mapboxgl.Map({
+    container: "map", // container id
+    style: "mapbox://styles/mapbox/streets-v11", // style URL
+    center: [lat, long], // starting position [lng, lat]
+    zoom: 9, // starting zoom
+  });
+}
 
 function getTime() {
   let date = new Date();
@@ -688,7 +695,6 @@ async function getWeather(location = cityLocation) {
   }
 
   nextDegs.forEach((next, index) => {
-    console.log("kek");
     switch (data.list[++index].weather[0].main) {
       case "Clouds":
         createIcon(element, "Clouds", next);
@@ -745,6 +751,7 @@ submit.addEventListener("click", () => {
   getWeather(input.value);
   localStorage.setItem("cityName", input.value);
   event.preventDefault();
+  getCoords(input.value);
 });
 
 function setCity(event) {
@@ -752,16 +759,32 @@ function setCity(event) {
     getWeather(input.value);
     localStorage.setItem("cityName", input.value);
     event.preventDefault();
+    getCoords(input.value);
   }
 }
 
-function getCoords() {
+let lat, lng;
+
+function getCoords(location) {
   fetch(
-    "https://api.opencagedata.com/geocode/v1/json?q=Minsk&key=cd613ca476f1423fa56396aa71db145c&pretty=1&no_annotations=1"
+    `https://api.opencagedata.com/geocode/v1/json?q=${location}&key=cd613ca476f1423fa56396aa71db145c&pretty=1&no_annotations=1`
   )
     .then((response) => response.json())
     .then((jsonResponse) => {
-      console.log(jsonResponse);
+      location1.innerHTML = jsonResponse.results[0].formatted;
+      lat = jsonResponse.results[0].geometry.lat;
+      latitude.innerHTML = `Latitude: ${
+        (jsonResponse.results[0].geometry.lat * 100) % 10 === 0
+          ? Math.floor(jsonResponse.results[0].geometry.lat * 100) / 100 + "0"
+          : Math.floor(jsonResponse.results[0].geometry.lat * 100) / 100
+      }`;
+      lng = jsonResponse.results[0].geometry.lng;
+      longitude.innerHTML = `Longitude: ${
+        (jsonResponse.results[0].geometry.lng * 100) % 10 === 0
+          ? Math.floor(jsonResponse.results[0].geometry.lng * 100) / 100 + "0"
+          : Math.floor(jsonResponse.results[0].geometry.lng * 100) / 100
+      }`;
+
+      createMap(lng, lat);
     });
 }
-getCoords();
