@@ -70,14 +70,25 @@ const input = document.querySelector('input[type="text"]');
 const submit = document.querySelector('button[type="submit"]');
 const rus = document.querySelector(".rus");
 const en = document.querySelector(".en");
+const selectCurrent = document.querySelector(".select__current");
+
+if (localStorage.getItem("rus")) {
+  selectCurrent.innerHTML = "rus";
+  submit.innerHTML = "ИСКАТЬ";
+  input.placeholder = "Введите город";
+}
 
 rus.addEventListener("click", () => {
   localStorage.setItem("rus", true);
   GetGeo();
+  submit.innerHTML = "ИСКАТЬ";
+  input.placeholder = "Введите город";
 });
 en.addEventListener("click", () => {
   localStorage.removeItem("rus");
   GetGeo();
+  submit.innerHTML = "SEARCH";
+  input.placeholder = "Search city";
 });
 
 var options = {
