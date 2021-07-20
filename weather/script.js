@@ -393,8 +393,10 @@ function createMap(lat, long) {
   });
 }
 
-function getTime() {
-  let date = new Date();
+function getTime(timezone) {
+  let date = new Date(
+    new Date().toLocaleString("en-US", { timeZone: timezone })
+  );
   let hours = date.getHours();
   let minutes = date.getMinutes();
   let seconds = date.getSeconds();
@@ -464,7 +466,7 @@ function getTime() {
   });
 }
 
-setInterval(getTime, 1000);
+let timerId = setInterval(getTime, 1000);
 
 function chooseWeekDay(weekday) {
   switch (weekday) {
@@ -797,9 +799,23 @@ function getCoords(location) {
           ? Math.floor(jsonResponse.results[0].geometry.lng * 100) / 100 + "0"
           : Math.floor(jsonResponse.results[0].geometry.lng * 100) / 100
       }`;
-
+      console.log(jsonResponse);
       createMap(lng, lat);
+      getTimeZone(lat, lng);
     });
 }
-console.log();
-localStorage.removeItem("cityName");
+
+function getTimeZone(lat, lng) {
+  fetch(
+    `http://api.timezonedb.com/v2.1/get-time-zone?key=DEX7IOQHW1M2&format=json&by=position&lat=${lat}&lng=${lng}`
+  )
+    .then((response) => response.json())
+    .then((jsonResponse) => {
+      console.log(jsonResponse);
+      getTime(jsonResponse.zoneName);
+      clearInterval(timerId);
+      timerId = setInterval(() => {
+        getTime(jsonResponse.zoneName);
+      }, 1000);
+    });
+}
