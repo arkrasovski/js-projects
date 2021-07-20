@@ -68,6 +68,17 @@ const farenBtn = document.querySelector(".faren");
 const celsBtn = document.querySelector(".cels");
 const input = document.querySelector('input[type="text"]');
 const submit = document.querySelector('button[type="submit"]');
+const rus = document.querySelector(".rus");
+const en = document.querySelector(".en");
+
+rus.addEventListener("click", () => {
+  localStorage.setItem("rus", true);
+  GetGeo();
+});
+en.addEventListener("click", () => {
+  localStorage.removeItem("rus");
+  GetGeo();
+});
 
 var options = {
   enableHighAccuracy: true,
@@ -345,12 +356,16 @@ function GetGeo() {
     .then((jsonResponse) => {
       const longLat = jsonResponse.loc.split(",");
       if (!localStorage.getItem("cityName")) {
-        latitude.innerHTML = `Latitude: ${
+        latitude.innerHTML = `${
+          localStorage.getItem("rus") ? "Широта" : "Latitude"
+        }: ${
           (longLat[0] * 100) % 10 === 0
             ? Math.floor(longLat[0] * 100) / 100 + "0"
             : Math.floor(longLat[0] * 100) / 100
         }`;
-        longitude.innerHTML = `Longitude: ${
+        longitude.innerHTML = `${
+          localStorage.getItem("rus") ? "Долгота" : "Longtitude"
+        }: ${
           (longLat[1] * 100) % 10 === 0
             ? Math.floor(longLat[1] * 100) / 100 + "0"
             : Math.floor(longLat[1] * 100) / 100
@@ -406,44 +421,86 @@ function getTime(timezone) {
   let weekday = date.getDay();
 
   weekday = chooseWeekDay(weekday);
-  switch (month) {
-    case 0:
-      month = "January";
-      break;
-    case 1:
-      month = "February";
-      break;
-    case 2:
-      month = "March";
-      break;
-    case 3:
-      month = "April";
-      break;
-    case 4:
-      month = "May";
-      break;
-    case 5:
-      month = "June";
-      break;
-    case 6:
-      month = "July";
-      break;
-    case 7:
-      month = "August";
-      break;
-    case 8:
-      month = "September";
-      break;
-    case 9:
-      month = "October";
-      break;
-    case 10:
-      month = "November";
-      break;
-    case 11:
-      month = "December";
-      break;
+  if (localStorage.getItem("rus")) {
+    switch (month) {
+      case 0:
+        month = "January";
+        break;
+      case 1:
+        month = "February";
+        break;
+      case 2:
+        month = "March";
+        break;
+      case 3:
+        month = "April";
+        break;
+      case 4:
+        month = "May";
+        break;
+      case 5:
+        month = "June";
+        break;
+      case 6:
+        month = "Июль";
+        break;
+      case 7:
+        month = "August";
+        break;
+      case 8:
+        month = "September";
+        break;
+      case 9:
+        month = "October";
+        break;
+      case 10:
+        month = "November";
+        break;
+      case 11:
+        month = "December";
+        break;
+    }
+  } else {
+    switch (month) {
+      case 0:
+        month = "January";
+        break;
+      case 1:
+        month = "February";
+        break;
+      case 2:
+        month = "March";
+        break;
+      case 3:
+        month = "April";
+        break;
+      case 4:
+        month = "May";
+        break;
+      case 5:
+        month = "June";
+        break;
+      case 6:
+        month = "July";
+        break;
+      case 7:
+        month = "August";
+        break;
+      case 8:
+        month = "September";
+        break;
+      case 9:
+        month = "October";
+        break;
+      case 10:
+        month = "November";
+        break;
+      case 11:
+        month = "December";
+        break;
+    }
   }
+
   datePanel.innerHTML = `${weekday} ${day} ${month} ${
     (hours < 10 ? "0" : "") + hours
   }:${(minutes < 10 ? "0" : "") + minutes}:${
@@ -469,29 +526,56 @@ function getTime(timezone) {
 let timerId = setInterval(getTime, 1000);
 
 function chooseWeekDay(weekday) {
-  switch (weekday) {
-    case 1:
-      weekday = "Mon";
-      break;
-    case 2:
-      weekday = "Tue";
-      break;
-    case 3:
-      weekday = "Wen";
-      break;
-    case 4:
-      weekday = "Thu";
-      break;
-    case 5:
-      weekday = "Fri";
-      break;
-    case 6:
-      weekday = "Sat";
+  if (localStorage.getItem("rus")) {
+    switch (weekday) {
+      case 1:
+        weekday = "Пн";
+        break;
+      case 2:
+        weekday = "Вт";
+        break;
+      case 3:
+        weekday = "Ср";
+        break;
+      case 4:
+        weekday = "Чт";
+        break;
+      case 5:
+        weekday = "Пт";
+        break;
+      case 6:
+        weekday = "Сб";
 
-      break;
-    case 0:
-      weekday = "Sun";
-      break;
+        break;
+      case 0:
+        weekday = "Вс";
+        break;
+    }
+  } else {
+    switch (weekday) {
+      case 1:
+        weekday = "Mon";
+        break;
+      case 2:
+        weekday = "Tue";
+        break;
+      case 3:
+        weekday = "Wen";
+        break;
+      case 4:
+        weekday = "Thu";
+        break;
+      case 5:
+        weekday = "Fri";
+        break;
+      case 6:
+        weekday = "Sat";
+
+        break;
+      case 0:
+        weekday = "Sun";
+        break;
+    }
   }
   return weekday;
 }
@@ -652,15 +736,21 @@ async function getWeather(location = cityLocation) {
   infoSpans.forEach((infospan, index) => {
     switch (index) {
       case 0:
-        infospan.innerHTML = `overcast feels like: ${Math.round(
-          data.list[0].main.feels_like
-        )}&deg`;
+        infospan.innerHTML = `${
+          localStorage.getItem("rus")
+            ? "Температура ощущается"
+            : "overcast feels like"
+        }: ${Math.round(data.list[0].main.feels_like)}&deg`;
         break;
       case 1:
-        infospan.innerHTML = `wind: ${data.list[0].wind.speed} m/s`;
+        infospan.innerHTML = `${
+          localStorage.getItem("rus") ? "Ветер" : "wind"
+        }: ${data.list[0].wind.speed} m/s`;
         break;
       case 2:
-        infospan.innerHTML = `humidity: ${data.list[0].main.humidity}%`;
+        infospan.innerHTML = `${
+          localStorage.getItem("rus") ? "Влажность" : "humidity"
+        }: ${data.list[0].main.humidity}%`;
         break;
     }
   });
@@ -788,13 +878,17 @@ function getCoords(location) {
     .then((jsonResponse) => {
       location1.innerHTML = jsonResponse.results[0].formatted;
       lat = jsonResponse.results[0].geometry.lat;
-      latitude.innerHTML = `Latitude: ${
+      latitude.innerHTML = `${
+        localStorage.getItem("rus") ? "Широта" : "Latitude"
+      }: ${
         (jsonResponse.results[0].geometry.lat * 100) % 10 === 0
           ? Math.floor(jsonResponse.results[0].geometry.lat * 100) / 100 + "0"
           : Math.floor(jsonResponse.results[0].geometry.lat * 100) / 100
       }`;
       lng = jsonResponse.results[0].geometry.lng;
-      longitude.innerHTML = `Longitude: ${
+      longitude.innerHTML = `${
+        localStorage.getItem("rus") ? "Долгота" : "Longtitude"
+      }: ${
         (jsonResponse.results[0].geometry.lng * 100) % 10 === 0
           ? Math.floor(jsonResponse.results[0].geometry.lng * 100) / 100 + "0"
           : Math.floor(jsonResponse.results[0].geometry.lng * 100) / 100
@@ -811,7 +905,6 @@ function getTimeZone(lat, lng) {
   )
     .then((response) => response.json())
     .then((jsonResponse) => {
-      console.log(jsonResponse);
       getTime(jsonResponse.zoneName);
       clearInterval(timerId);
       timerId = setInterval(() => {
@@ -819,3 +912,5 @@ function getTimeZone(lat, lng) {
       }, 1000);
     });
 }
+
+localStorage.removeItem("cityName");
