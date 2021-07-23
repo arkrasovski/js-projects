@@ -74,17 +74,20 @@ const selectCurrent = document.querySelector(".select__current");
 const modal = document.querySelector(".modal");
 const modalClose = document.querySelector("div.modal_close");
 
-console.log(modalClose);
+console.log(modal.firstChild);
 
 if (localStorage.getItem("rus")) {
   selectCurrent.innerHTML = "rus";
   submit.innerHTML = "ИСКАТЬ";
   input.placeholder = "Введите город";
+  modal.firstChild.innerHTML =
+    "Такого города не существует, попробуйте еще раз";
 }
 
 rus.addEventListener("click", () => {
   localStorage.setItem("rus", true);
-
+  modal.firstChild.innerHTML =
+    "Такого города не существует, попробуйте еще раз";
   GetGeo();
   submit.innerHTML = "ИСКАТЬ";
   input.placeholder = "Введите город";
@@ -94,6 +97,7 @@ en.addEventListener("click", () => {
   GetGeo();
   submit.innerHTML = "SEARCH";
   input.placeholder = "Search city";
+  modal.firstChild.innerHTML = "This city does not exist, please try again";
 });
 
 var options = {
@@ -826,15 +830,16 @@ function getWeather(location = cityLocation) {
       });
     })
     .catch(() => {
-      modal.style.display = "flex";
-
+      modal.classList.remove("hide_modal");
+      modal.classList.add("visible_modal");
       localStorage.removeItem("cityName");
       getWeather(localStorage.getItem("previousCity"));
       localStorage.setItem("cityName", localStorage.getItem("previousCity"));
     });
 }
 modalClose.addEventListener("click", () => {
-  modal.style.display = "none";
+  modal.classList.add("hide_modal");
+  modal.classList.remove("visible_modal");
 });
 
 function createIcon(element, name, parent) {
