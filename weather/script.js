@@ -74,8 +74,6 @@ const selectCurrent = document.querySelector(".select__current");
 const modal = document.querySelector(".modal");
 const modalClose = document.querySelector("div.modal_close");
 
-console.log(modal.firstChild);
-
 if (localStorage.getItem("rus")) {
   selectCurrent.innerHTML = "rus";
   submit.innerHTML = "ИСКАТЬ";
@@ -747,7 +745,6 @@ function getWeather(location = cityLocation) {
   )
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
       if (localStorage.getItem("Fareng")) {
         todayDeg.innerHTML = `${Math.round(
           (data.list[0].main.temp * 9) / 5 + 32
