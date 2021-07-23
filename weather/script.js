@@ -71,6 +71,10 @@ const submit = document.querySelector('button[type="submit"]');
 const rus = document.querySelector(".rus");
 const en = document.querySelector(".en");
 const selectCurrent = document.querySelector(".select__current");
+const modal = document.querySelector(".modal");
+const modalClose = document.querySelector("div.modal_close");
+
+console.log(modalClose);
 
 if (localStorage.getItem("rus")) {
   selectCurrent.innerHTML = "rus";
@@ -80,6 +84,7 @@ if (localStorage.getItem("rus")) {
 
 rus.addEventListener("click", () => {
   localStorage.setItem("rus", true);
+
   GetGeo();
   submit.innerHTML = "ИСКАТЬ";
   input.placeholder = "Введите город";
@@ -384,7 +389,7 @@ function GetGeo() {
       }
 
       if (localStorage.getItem("cityName")) {
-        location1.innerHTML = getCoords(localStorage.getItem("cityName"));
+        getCoords(localStorage.getItem("cityName"));
       } else {
         location1.innerHTML = `${jsonResponse.city}, ${
           country[jsonResponse.country]
@@ -402,7 +407,9 @@ function GetGeo() {
           getWeather(jsonResponse.city);
         }, 10800000);
       }
-      createMap(longLat[1], longLat[0]);
+      if (!localStorage.getItem("cityName")) {
+        createMap(longLat[1], longLat[0]);
+      }
       cityLocation = jsonResponse.city;
     });
 }
@@ -525,10 +532,10 @@ function getTime(timezone) {
   }
 
   nextSlides.forEach((next) => {
-    if (weekday <= 7) {
+    if (weekday < 7) {
       next.innerHTML = `${chooseWeekDay(weekday++)}`;
     } else {
-      weekday = 1;
+      weekday = 0;
       next.innerHTML = `${chooseWeekDay(weekday++)}`;
     }
   });
@@ -730,93 +737,106 @@ const icons = {
 `,
 };
 
-async function getWeather(location = cityLocation) {
-  const url = `https://api.openweathermap.org/data/2.5/forecast?q=${location}&lang=ua&units=metric&APPID=2849a388050fed5faf7c5e021a44c7c2`;
-  const res = await fetch(url);
-  const data = await res.json();
-  if (localStorage.getItem("Fareng")) {
-    todayDeg.innerHTML = `${Math.round(
-      (data.list[0].main.temp * 9) / 5 + 32
-    )}&deg`;
-    farenBtn.classList.add("deg-active");
-  } else {
-    todayDeg.innerHTML = `${Math.round(data.list[0].main.temp)}&deg`;
-    celsBtn.classList.add("deg-active");
-    farenBtn.classList.remove("deg-active");
-  }
-  infoSpans.forEach((infospan, index) => {
-    switch (index) {
-      case 0:
-        infospan.innerHTML = `${
-          localStorage.getItem("rus")
-            ? "Температура ощущается"
-            : "overcast feels like"
-        }: ${Math.round(data.list[0].main.feels_like)}&deg`;
-        break;
-      case 1:
-        infospan.innerHTML = `${
-          localStorage.getItem("rus") ? "Ветер" : "wind"
-        }: ${data.list[0].wind.speed} m/s`;
-        break;
-      case 2:
-        infospan.innerHTML = `${
-          localStorage.getItem("rus") ? "Влажность" : "humidity"
-        }: ${data.list[0].main.humidity}%`;
-        break;
-    }
-  });
-  nextDegs.forEach((next, index) => {
-    if (localStorage.getItem("Fareng")) {
-      next.innerHTML = `${Math.round(
-        (data.list[++index].main.temp * 9) / 5 + 32
-      )}&deg`;
-    } else {
-      next.innerHTML = `${Math.round(data.list[++index].main.temp)}&deg`;
-    }
-  });
+function getWeather(location = cityLocation) {
+  fetch(
+    `https://api.openweathermap.org/data/2.5/forecast?q=${location}&lang=ua&units=metric&APPID=2849a388050fed5faf7c5e021a44c7c2`
+  )
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      if (localStorage.getItem("Fareng")) {
+        todayDeg.innerHTML = `${Math.round(
+          (data.list[0].main.temp * 9) / 5 + 32
+        )}&deg`;
+        farenBtn.classList.add("deg-active");
+      } else {
+        todayDeg.innerHTML = `${Math.round(data.list[0].main.temp)}&deg`;
+        celsBtn.classList.add("deg-active");
+        farenBtn.classList.remove("deg-active");
+      }
+      infoSpans.forEach((infospan, index) => {
+        switch (index) {
+          case 0:
+            infospan.innerHTML = `${
+              localStorage.getItem("rus")
+                ? "Температура ощущается"
+                : "overcast feels like"
+            }: ${Math.round(data.list[0].main.feels_like)}&deg`;
+            break;
+          case 1:
+            infospan.innerHTML = `${
+              localStorage.getItem("rus") ? "Ветер" : "wind"
+            }: ${data.list[0].wind.speed} m/s`;
+            break;
+          case 2:
+            infospan.innerHTML = `${
+              localStorage.getItem("rus") ? "Влажность" : "humidity"
+            }: ${data.list[0].main.humidity}%`;
+            break;
+        }
+      });
+      nextDegs.forEach((next, index) => {
+        if (localStorage.getItem("Fareng")) {
+          next.innerHTML = `${Math.round(
+            (data.list[++index].main.temp * 9) / 5 + 32
+          )}&deg`;
+        } else {
+          next.innerHTML = `${Math.round(data.list[++index].main.temp)}&deg`;
+        }
+      });
 
-  const elements = document.querySelectorAll(".element");
-  elements.forEach((element) => {
-    element.remove();
-  });
+      const elements = document.querySelectorAll(".element");
+      elements.forEach((element) => {
+        element.remove();
+      });
 
-  let element;
+      let element;
 
-  switch (data.list[0].weather[0].main) {
-    case "Clouds":
-      createIcon(element, "Clouds", todayDeg);
-      break;
-    case "Rain":
-      createIcon(element, "Rain", todayDeg);
-      break;
-    case "Clear":
-      createIcon(element, "Clear", todayDeg);
-      break;
-    case "Snow":
-      createIcon(element, "Snow", todayDeg);
-      break;
-  }
+      switch (data.list[0].weather[0].main) {
+        case "Clouds":
+          createIcon(element, "Clouds", todayDeg);
+          break;
+        case "Rain":
+          createIcon(element, "Rain", todayDeg);
+          break;
+        case "Clear":
+          createIcon(element, "Clear", todayDeg);
+          break;
+        case "Snow":
+          createIcon(element, "Snow", todayDeg);
+          break;
+      }
 
-  nextDegs.forEach((next, index) => {
-    switch (data.list[++index].weather[0].main) {
-      case "Clouds":
-        createIcon(element, "Clouds", next);
+      nextDegs.forEach((next, index) => {
+        switch (data.list[++index].weather[0].main) {
+          case "Clouds":
+            createIcon(element, "Clouds", next);
 
-        break;
-      case "Rain":
-        createIcon(element, "Rain", next);
-        break;
-      case "Clear":
-        createIcon(element, "Clear", next);
-        break;
-      case "Snow":
-        createIcon(element, "Snow", next);
-        break;
-    }
-  });
+            break;
+          case "Rain":
+            createIcon(element, "Rain", next);
+            break;
+          case "Clear":
+            createIcon(element, "Clear", next);
+            break;
+          case "Snow":
+            createIcon(element, "Snow", next);
+            break;
+        }
+      });
+    })
+    .catch(() => {
+      modal.style.display = "flex";
 
-  return false;
+      localStorage.removeItem("cityName");
+      getWeather(localStorage.getItem("previousCity"));
+      localStorage.setItem("cityName", localStorage.getItem("previousCity"));
+    });
 }
+modalClose.addEventListener("click", () => {
+  modal.style.display = "none";
+});
+
 function createIcon(element, name, parent) {
   element = document.createElement("div");
   element.classList.add("element");
@@ -857,6 +877,9 @@ function changeMeasure(faren) {
 input.addEventListener("keypress", setCity);
 submit.addEventListener("click", () => {
   if (input.value != "" && input.value.replace(/\s/g, "") != "") {
+    if (localStorage.getItem("cityName")) {
+      localStorage.setItem("previousCity", localStorage.getItem("cityName"));
+    }
     getWeather(input.value);
     localStorage.setItem("cityName", input.value);
     event.preventDefault();
@@ -871,7 +894,11 @@ function setCity(event) {
     input.value != "" &&
     input.value.replace(/\s/g, "") != ""
   ) {
+    if (localStorage.getItem("cityName")) {
+      localStorage.setItem("previousCity", localStorage.getItem("cityName"));
+    }
     getWeather(input.value);
+
     localStorage.setItem("cityName", input.value);
     event.preventDefault();
     getCoords(input.value);
@@ -904,7 +931,7 @@ function getCoords(location) {
           ? Math.floor(jsonResponse.results[0].geometry.lng * 100) / 100 + "0"
           : Math.floor(jsonResponse.results[0].geometry.lng * 100) / 100
       }`;
-      console.log(jsonResponse);
+
       createMap(lng, lat);
       getTimeZone(lat, lng);
     });
@@ -923,5 +950,3 @@ function getTimeZone(lat, lng) {
       }, 1000);
     });
 }
-
-localStorage.removeItem("cityName");
