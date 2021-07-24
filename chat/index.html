@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" const="text/html;charset=UTF-8" />
+    <link
+      href="http://fonts.googleapis.com/css?family=Comfortaa"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" type="text/css" href="/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <title>Chat App</title>
+  </head>
+
+  <body>
+    <header>
+      <h1>Чат</h1>
+    </header>
+
+    <section>
+      <div id="change_username">
+        <form id="userForm">
+          <input id="username" type="text" />
+          <button id="send_username" type="submit">
+            Изменить имя пользователя
+          </button>
+        </form>
+      </div>
+    </section>
+
+    <section id="chatroom">
+      <section id="feedback"></section>
+    </section>
+
+    <section id="input_zone">
+      <form id="messForm">
+        <input id="message" type="text" />
+        <button id="send_message" type="submit">Отправить</button>
+      </form>
+    </section>
+
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="index.js"></script>
+    <script>
+      var min = 1;
+      var max = 6;
+      var random = Math.floor(Math.random() * (max - min)) + min;
+
+      // Устаналиваем класс в переменную в зависимости от случайного числа
+      // Эти классы взяты из Bootstrap стилей
+      var alertClass;
+      switch (random) {
+        case 1:
+          alertClass = "secondary";
+          break;
+        case 2:
+          alertClass = "danger";
+          break;
+        case 3:
+          alertClass = "success";
+          break;
+        case 4:
+          alertClass = "warning";
+          break;
+        case 5:
+          alertClass = "info";
+          break;
+        case 6:
+          alertClass = "light";
+          break;
+      }
+
+      $(function () {
+        const socket = io.connect(); //подключили имитируем коннект пользователя
+        var $messForm = $("#messForm");
+        var $textarea = $("#message");
+        var $allMessages = $("#feedback");
+        var $namearea = $("#username");
+        var $userForm = $("#userForm");
+        var $userName = "anonim";
+
+        $messForm.submit(function (e) {
+          e.preventDefault();
+          socket.emit("send mess", {
+            mess: $textarea.val(),
+            className: alertClass,
+          });
+          $textarea.val("");
+        });
+
+        socket.on("add mess", (data) => {
+          $allMessages.append(
+            `<div class="alert alert-${data.className}">${$userName}: ${data.mess}</div>`
+          );
+        }); //data - текстовое значение
+
+        $userForm.submit(function (e) {
+          e.preventDefault();
+          socket.emit("send username", $namearea.val());
+          $namearea.val("");
+        });
+
+        socket.on("add username", (data) => {
+          $userName = data.name;
+        }); //data - текстовое значение
+      });
+    </script>
+  </body>
+</html>

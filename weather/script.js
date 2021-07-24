@@ -116,7 +116,7 @@ navigator.geolocation.getCurrentPosition(success, error, options);
 
 let cityLocation;
 
-function GetGeo() {
+async function GetGeo() {
   const country = {
     BD: "Bangladesh",
     BE: "Belgium",
@@ -371,7 +371,7 @@ function GetGeo() {
   };
   fetch("https://ipinfo.io/json?token=441aae3002c36f")
     .then((response) => response.json())
-    .then((jsonResponse) => {
+    .then(async function (jsonResponse) {
       const longLat = jsonResponse.loc.split(",");
       if (!localStorage.getItem("cityName")) {
         latitude.innerHTML = `${
@@ -391,7 +391,7 @@ function GetGeo() {
       }
 
       if (localStorage.getItem("cityName")) {
-        getCoords(localStorage.getItem("cityName"));
+        await getCoords(localStorage.getItem("cityName"));
       } else {
         location1.innerHTML = `${jsonResponse.city}, ${
           country[jsonResponse.country]
@@ -399,7 +399,7 @@ function GetGeo() {
       }
 
       if (localStorage.getItem("cityName")) {
-        getWeather(localStorage.getItem("cityName"));
+        await getWeather(localStorage.getItem("cityName"));
         setInterval(() => {
           getWeather(localStorage.getItem("cityName"));
         }, 10800000);
@@ -410,7 +410,7 @@ function GetGeo() {
         }, 10800000);
       }
       if (!localStorage.getItem("cityName")) {
-        createMap(longLat[1], longLat[0]);
+        await createMap(longLat[1], longLat[0]);
       }
       cityLocation = jsonResponse.city;
     });
@@ -915,7 +915,7 @@ function getCoords(location) {
     `https://api.opencagedata.com/geocode/v1/json?q=${location}&key=cd613ca476f1423fa56396aa71db145c&pretty=1&no_annotations=1`
   )
     .then((response) => response.json())
-    .then((jsonResponse) => {
+    .then(async function (jsonResponse) {
       location1.innerHTML = jsonResponse.results[0].formatted;
       lat = jsonResponse.results[0].geometry.lat;
       latitude.innerHTML = `${
@@ -934,8 +934,8 @@ function getCoords(location) {
           : Math.floor(jsonResponse.results[0].geometry.lng * 100) / 100
       }`;
 
-      createMap(lng, lat);
-      getTimeZone(lat, lng);
+      await createMap(lng, lat);
+      await getTimeZone(lat, lng);
     });
 }
 
