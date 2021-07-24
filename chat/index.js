@@ -97,7 +97,11 @@ io.sockets.on("connection", (socket) => {
   });
 
   socket.on("send mess", (data) => {
-    io.sockets.emit("add mess", { mess: data.mess, className: data.className });
+    io.sockets.emit("add mess", {
+      mess: data.mess,
+      name: data.name,
+      className: data.className,
+    });
   }); //data - текстовое значение
 
   socket.on("send username", (data) => {

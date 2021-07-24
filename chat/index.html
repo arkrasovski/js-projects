@@ -23,12 +23,7 @@
 
     <section>
       <div id="change_username">
-        <form id="userForm">
-          <input id="username" type="text" />
-          <button id="send_username" type="submit">
-            Изменить имя пользователя
-          </button>
-        </form>
+        <input id="username" type="text" />
       </div>
     </section>
 
@@ -80,13 +75,14 @@
         var $textarea = $("#message");
         var $allMessages = $("#feedback");
         var $namearea = $("#username");
-        var $userForm = $("#userForm");
-        var $userName = "anonim";
+        // var $userForm = $("#userForm");
+        // var $userName = "anonim";
 
         $messForm.submit(function (e) {
           e.preventDefault();
           socket.emit("send mess", {
             mess: $textarea.val(),
+            name: $namearea.val(),
             className: alertClass,
           });
           $textarea.val("");
@@ -94,19 +90,15 @@
 
         socket.on("add mess", (data) => {
           $allMessages.append(
-            `<div class="alert alert-${data.className}">${$userName}: ${data.mess}</div>`
+            `<div class="alert alert-${data.className}">${
+              data.name === "" ? "anonim" : data.name
+            }: ${data.mess}</div>`
           );
         }); //data - текстовое значение
 
-        $userForm.submit(function (e) {
-          e.preventDefault();
-          socket.emit("send username", $namearea.val());
-          $namearea.val("");
-        });
-
-        socket.on("add username", (data) => {
-          $userName = data.name;
-        }); //data - текстовое значение
+        // socket.on("add username", (data) => {
+        //   $userName = data.name;
+        // }); //data - текстовое значение
       });
     </script>
   </body>
