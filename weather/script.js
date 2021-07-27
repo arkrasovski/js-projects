@@ -73,6 +73,7 @@ const en = document.querySelector(".en");
 const selectCurrent = document.querySelector(".select__current");
 const modal = document.querySelector(".modal");
 const modalClose = document.querySelector("div.modal_close");
+const content = document.querySelector(".content");
 
 if (localStorage.getItem("rus")) {
   selectCurrent.innerHTML = "rus";
@@ -740,11 +741,18 @@ const icons = {
 };
 
 function getWeather(location = cityLocation) {
+  const div = document.createElement("div");
+  div.classList.add("loadingio-spinner-spin-pdor9t6pt1t");
+  div.innerHTML = `<div class="ldio-f0euipl0v36">
+  <div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div>
+  </div>`;
+  content.append(div);
   fetch(
     `https://api.openweathermap.org/data/2.5/forecast?q=${location}&lang=ua&units=metric&APPID=2849a388050fed5faf7c5e021a44c7c2`
   )
     .then((response) => response.json())
     .then((data) => {
+      div.remove();
       if (localStorage.getItem("Fareng")) {
         todayDeg.innerHTML = `${Math.round(
           (data.list[0].main.temp * 9) / 5 + 32
