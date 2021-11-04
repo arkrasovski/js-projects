@@ -89,11 +89,13 @@
         });
 
         socket.on("add mess", (data) => {
-          $allMessages.append(
-            `<div class="alert alert-${data.className}">${
-              data.name === "" ? "anonim" : data.name
-            }: ${data.mess}</div>`
-          );
+          if (data.mess !== "") {
+            $allMessages.append(
+              `<div class="alert alert-${data.className}">${
+                data.name === "" ? "anonim" : data.name
+              }: ${data.mess}</div>`
+            );
+          }
         }); //data - текстовое значение
 
         // socket.on("add username", (data) => {
