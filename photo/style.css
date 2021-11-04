@@ -93,6 +93,11 @@ button {
   outline: none;
 }
 
+button a {
+  color: #59c7b8;
+  text-decoration: none;
+}
+
 .hide {
   display: none;
 }

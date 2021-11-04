@@ -73,6 +73,7 @@ const en = document.querySelector(".en");
 const selectCurrent = document.querySelector(".select__current");
 const modal = document.querySelector(".modal");
 const modalClose = document.querySelector("div.modal_close");
+const content = document.querySelector(".content");
 
 if (localStorage.getItem("rus")) {
   selectCurrent.innerHTML = "rus";
@@ -83,19 +84,23 @@ if (localStorage.getItem("rus")) {
 }
 
 rus.addEventListener("click", () => {
-  localStorage.setItem("rus", true);
-  modal.firstChild.innerHTML =
-    "Такого города не существует, попробуйте еще раз";
-  GetGeo();
-  submit.innerHTML = "ИСКАТЬ";
-  input.placeholder = "Введите город";
+  if (!localStorage.getItem("rus")) {
+    localStorage.setItem("rus", true);
+    modal.firstChild.innerHTML =
+      "Такого города не существует, попробуйте еще раз";
+    GetGeo();
+    submit.innerHTML = "ИСКАТЬ";
+    input.placeholder = "Введите город";
+  }
 });
 en.addEventListener("click", () => {
-  localStorage.removeItem("rus");
-  GetGeo();
-  submit.innerHTML = "SEARCH";
-  input.placeholder = "Search city";
-  modal.firstChild.innerHTML = "This city does not exist, please try again";
+  if (localStorage.getItem("rus")) {
+    localStorage.removeItem("rus");
+    GetGeo();
+    submit.innerHTML = "SEARCH";
+    input.placeholder = "Search city";
+    modal.firstChild.innerHTML = "This city does not exist, please try again";
+  }
 });
 
 var options = {
@@ -109,7 +114,7 @@ function success(pos) {
 }
 
 function error(err) {
-  alert(`ERROR(${err.code}): ${err.message}`);
+  console.log(`ERROR(${err.code}): ${err.message}`);
 }
 
 navigator.geolocation.getCurrentPosition(success, error, options);
@@ -371,7 +376,8 @@ async function GetGeo() {
   };
   fetch("https://ipinfo.io/json?token=441aae3002c36f")
     .then((response) => response.json())
-    .then(async function (jsonResponse) {
+    .then(function (jsonResponse) {
+      console.log(jsonResponse);
       const longLat = jsonResponse.loc.split(",");
       if (!localStorage.getItem("cityName")) {
         latitude.innerHTML = `${
@@ -391,7 +397,7 @@ async function GetGeo() {
       }
 
       if (localStorage.getItem("cityName")) {
-        await getCoords(localStorage.getItem("cityName"));
+        getCoords(localStorage.getItem("cityName"));
       } else {
         location1.innerHTML = `${jsonResponse.city}, ${
           country[jsonResponse.country]
@@ -399,7 +405,7 @@ async function GetGeo() {
       }
 
       if (localStorage.getItem("cityName")) {
-        await getWeather(localStorage.getItem("cityName"));
+        getWeather(localStorage.getItem("cityName"));
         setInterval(() => {
           getWeather(localStorage.getItem("cityName"));
         }, 10800000);
@@ -410,7 +416,7 @@ async function GetGeo() {
         }, 10800000);
       }
       if (!localStorage.getItem("cityName")) {
-        await createMap(longLat[1], longLat[0]);
+        createMap(longLat[1], longLat[0]);
       }
       cityLocation = jsonResponse.city;
     });
@@ -465,7 +471,7 @@ function getTime(timezone) {
         month = "Июль";
         break;
       case 7:
-        month = "August";
+        month = "Август";
         break;
       case 8:
         month = "September";
@@ -740,11 +746,18 @@ const icons = {
 };
 
 function getWeather(location = cityLocation) {
+  const div = document.createElement("div");
+  div.classList.add("loadingio-spinner-spin-pdor9t6pt1t");
+  div.innerHTML = `<div class="ldio-f0euipl0v36">
+  <div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div>
+  </div>`;
+  content.append(div);
   fetch(
     `https://api.openweathermap.org/data/2.5/forecast?q=${location}&lang=ua&units=metric&APPID=2849a388050fed5faf7c5e021a44c7c2`
   )
     .then((response) => response.json())
     .then((data) => {
+      div.remove();
       if (localStorage.getItem("Fareng")) {
         todayDeg.innerHTML = `${Math.round(
           (data.list[0].main.temp * 9) / 5 + 32
@@ -825,6 +838,7 @@ function getWeather(location = cityLocation) {
             break;
         }
       });
+      getCoords(location);
     })
     .catch(() => {
       modal.classList.remove("hide_modal");
@@ -850,17 +864,16 @@ farenBtn.addEventListener("click", () => {
   if (!localStorage.getItem("Fareng")) {
     farenBtn.classList.toggle("deg-active");
     celsBtn.classList.toggle("deg-active");
+    changeMeasure(true);
   }
-
-  changeMeasure(true);
 });
 
 celsBtn.addEventListener("click", () => {
   if (localStorage.getItem("Fareng")) {
     farenBtn.classList.toggle("deg-active");
     celsBtn.classList.toggle("deg-active");
+    changeMeasure(false);
   }
-  changeMeasure(false);
 });
 
 function changeMeasure(faren) {
@@ -878,6 +891,10 @@ function changeMeasure(faren) {
 
 input.addEventListener("keypress", setCity);
 submit.addEventListener("click", () => {
+  if (input.value === localStorage.getItem("cityName")) {
+    input.value = "";
+    return;
+  }
   if (input.value != "" && input.value.replace(/\s/g, "") != "") {
     if (localStorage.getItem("cityName")) {
       localStorage.setItem("previousCity", localStorage.getItem("cityName"));
@@ -885,12 +902,16 @@ submit.addEventListener("click", () => {
     getWeather(input.value);
     localStorage.setItem("cityName", input.value);
     event.preventDefault();
-    getCoords(input.value);
+
     input.value = "";
   }
 });
 
 function setCity(event) {
+  if (input.value === localStorage.getItem("cityName")) {
+    input.value = "";
+    return;
+  }
   if (
     event.code === "Enter" &&
     input.value != "" &&
@@ -903,7 +924,6 @@ function setCity(event) {
 
     localStorage.setItem("cityName", input.value);
     event.preventDefault();
-    getCoords(input.value);
     input.value = "";
   }
 }
@@ -912,10 +932,12 @@ let lat, lng;
 
 function getCoords(location) {
   fetch(
-    `https://api.opencagedata.com/geocode/v1/json?q=${location}&key=cd613ca476f1423fa56396aa71db145c&pretty=1&no_annotations=1`
+    `https://api.opencagedata.com/geocode/v1/json?q=${location}&key=cd613ca476f1423fa56396aa71db145c&pretty=1&no_annotations=1&language=${
+      localStorage.getItem("rus") ? "ru" : "en"
+    }`
   )
     .then((response) => response.json())
-    .then(async function (jsonResponse) {
+    .then(function (jsonResponse) {
       location1.innerHTML = jsonResponse.results[0].formatted;
       lat = jsonResponse.results[0].geometry.lat;
       latitude.innerHTML = `${
@@ -934,14 +956,16 @@ function getCoords(location) {
           : Math.floor(jsonResponse.results[0].geometry.lng * 100) / 100
       }`;
 
-      await createMap(lng, lat);
-      await getTimeZone(lat, lng);
+      createMap(lng, lat);
+      console.log(lat, lng);
+      getTimeZone(lat, lng);
     });
 }
 
 function getTimeZone(lat, lng) {
+  console.log(lat, lng);
   fetch(
-    `http://api.timezonedb.com/v2.1/get-time-zone?key=DEX7IOQHW1M2&format=json&by=position&lat=${lat}&lng=${lng}`
+    `https://api.timezonedb.com/v2.1/get-time-zone?key=DEX7IOQHW1M2&format=json&by=position&lat=${lat}&lng=${lng}`
   )
     .then((response) => response.json())
     .then((jsonResponse) => {
@@ -950,5 +974,93 @@ function getTimeZone(lat, lng) {
       timerId = setInterval(() => {
         getTime(jsonResponse.zoneName);
       }, 1000);
+    })
+    .catch((err) => {
+      console.log(err);
     });
 }
+console.log(4 + 3);
+console.log([[[[[0]], [1]], [[[2], [3]]], [[4], [5]]]].flat(Infinity));
+
+var validWord = function (dictionary, word) {
+  let smallest = Infinity;
+  for (Dword of dictionary) {
+    if (Dword.length < smallest) {
+      smallest = Dword.length;
+    }
+  }
+  let checkCycle = 0;
+  while (word.length >= smallest) {
+    console.log("blya", word);
+    checkCycle++;
+    for (Dword of dictionary) {
+      if (word.substr(0, Dword.length) === Dword) {
+        console.log("yra!", word);
+        word = word.replace(Dword, "");
+        console.log("izmenil", word, "ishodn", Dword);
+        checkCycle--;
+      }
+    }
+    if (checkCycle) {
+      break;
+    }
+  }
+  console.log("!result!!!", word);
+  if (word.length === 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+validWord(["ab", "a", "bc"], "abc");
+
+function deepCount(a) {
+  let l = 0;
+  function recursion(f) {
+    l += f.length;
+    for (x of f) {
+      if (Array.isArray(x)) {
+        recursion(x);
+      }
+    }
+  }
+  recursion(a);
+  console.log(l);
+  return l;
+}
+deepCount([[[[[[[[[]]]]]]]]]);
+
+console.log(parseInt("12", 2) * 100);
+
+function dec2bin(dec) {
+  return dec.toString(2);
+  //(dec >>> 0).toString(2);
+}
+console.log(dec2bin(2));
+
+let name = "John";
+
+function sayHi() {
+  console.log("Hi, " + name);
+}
+
+name = "Pete";
+
+sayHi(); // что будет показано: "John" или "Pete"?
+
+function makeWorker() {
+  let name = "Pete";
+
+  return function () {
+    console.log(name);
+  };
+}
+
+let name = "John";
+
+// create a function
+let work = makeWorker();
+
+// call it
+work(); // что будет показано? "Pete" (из места создания) или "John" (из места выполнения)

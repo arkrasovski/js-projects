@@ -40,13 +40,14 @@ play(3);
 
 function tutorial() {
   if (!boolTutor) {
-    if (parseInt(water.style.height, 10) == water.offsetHeight) {
-      water.style.height = water.offsetHeight / 8 + "px";
-    }
+    water.style.height = "150px";
 
     modal.style.display = "none";
     play(2);
-    createBall("", "ball1", true);
+    setTimeout(() => {
+      createBall("", "ball1", true);
+    }, 1000);
+
     boolTutor = true;
   } else return;
 }
@@ -102,7 +103,7 @@ function submit() {
 
     result = 0;
     tablo.innerHTML = 0;
-    score += 30;
+    score = 30;
     scorepanel.innerHTML = "Score " + score;
     alert("молодец! вы ввели правильный ответ, шарик лопнул");
     play(3, score);
@@ -167,10 +168,6 @@ function move(el, tutor) {
       if (pos === Math.floor(window.innerHeight / 2)) {
         alert("Введите ответ выражения и нажмите ентер ");
 
-        if (result == el.getAttribute("data-res")) {
-          score += 30;
-          scorepanel.innerHTML = "Score " + score;
-        }
         clearInterval(id);
       } else if (pos === window.innerHeight - water.offsetHeight - 50) {
         audio.play();
@@ -291,3 +288,30 @@ window.addEventListener("keydown", (e) => {
     }
   });
 });
+
+let post = {
+  title: "JavaScript Template Literals",
+  excerpt: "Introduction to JavaScript template literals in ES6",
+  body: "Content of the post will be here...",
+  tags: ["es6", "template literals", "javascript"],
+};
+
+let { title, excerpt, body, tags } = post;
+
+var postHtml = `<article>
+<header>
+    <h1>${title}</h1>
+</header>
+<section>
+    <div>${excerpt}</div>
+    <div>${body}</div>
+</section>
+<footer>
+    <ul>
+      ${tags
+        .map((tag) => `<li>${tag}</li>`)
+        .join("\n      ")} //типа форматирование для li (табуляции)
+    </ul>
+</footer>`;
+
+console.log(postHtml);
